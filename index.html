@@ -355,6 +355,53 @@
             50% { opacity: 0.4; }
         }
 
+        /* Philosophy Section */
+        .philosophy {
+            background: var(--slate-900);
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .philosophy-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .philosophy blockquote {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--slate-300);
+            line-height: 1.6;
+            position: relative;
+            padding: 0 2rem;
+        }
+
+        .philosophy blockquote::before {
+            content: '"';
+            position: absolute;
+            left: 0;
+            top: -0.5rem;
+            font-size: 4rem;
+            color: var(--orange-500);
+            opacity: 0.3;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .philosophy blockquote span {
+            color: var(--orange-500);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .philosophy blockquote {
+                font-size: 1.2rem;
+                padding: 0 1rem;
+            }
+        }
+
         /* Section Styles */
         section {
             padding: 6rem 2rem;
@@ -966,6 +1013,15 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="philosophy">
+        <div class="philosophy-container">
+            <blockquote>
+                We're not an AI company competing with Google. We use their free infrastructure to solve a problem they'll never focus on — <span>keeping elderly parents safe at home.</span>
+            </blockquote>
         </div>
     </section>
 
