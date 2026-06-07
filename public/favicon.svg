@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="EMOTE4D">
+  <rect width="64" height="64" rx="14" fill="#FBF8F3"/>
+  <g stroke="#1C1B19" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M16 22 L16 16 L22 16"/>
+    <path d="M42 16 L48 16 L48 22"/>
+    <path d="M16 42 L16 48 L22 48"/>
+    <path d="M48 42 L48 48 L42 48"/>
+  </g>
+  <g stroke="#2F5D50" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="32" cy="24" r="5" fill="#2F5D50" stroke="none"/>
+    <path d="M32 29 L32 41"/>
+    <path d="M23 33 L41 33"/>
+    <path d="M32 41 L26 50"/>
+    <path d="M32 41 L38 50"/>
+  </g>
+</svg>

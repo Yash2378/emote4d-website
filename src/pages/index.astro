@@ -1,0 +1,481 @@
+---
+import Base from "../layouts/Base.astro";
+import CameraToSkeleton from "../components/CameraToSkeleton.astro";
+
+const steps = [
+  {
+    n: "01",
+    title: "A camera watches the room.",
+    body: "The whole system is a Raspberry Pi 5 and a Raspberry Pi Camera Module 3, sitting in the corner of a room. Everything happens on that one device.",
+  },
+  {
+    n: "02",
+    title: "The image becomes a stick figure.",
+    body: "MediaPipe pose estimation reads body position from each frame, on the device, and the frame is discarded in the same moment. No image is stored. No image is sent.",
+  },
+  {
+    n: "03",
+    title: "Two checks, not one.",
+    body: "A first model screens for a possible fall. A separate stage then confirms the person is actually on the ground before anything happens — which is what keeps ordinary movement from setting off an alert.",
+  },
+  {
+    n: "04",
+    title: "A text goes to caregivers.",
+    body: "If the fall is confirmed, EMOTE4D sends an SMS. A short verification delay sits in between, on purpose, to cut false alarms.",
+  },
+];
+
+const isList = [
+  "A camera-based fall detector that runs entirely on the device.",
+  "A way to get a text when someone falls, with nothing to wear or charge.",
+  "Built so the detection itself never depends on the cloud or Wi-Fi.",
+  "A pilot, launching in 2026.",
+];
+
+const isntList = [
+  "A wearable pendant or a watch.",
+  "A live video feed, a recording, or a cloud service.",
+  "A medical device — and we don't claim a detection-accuracy number.",
+  "Available yet. We're pre-launch.",
+];
+---
+
+<Base
+  title="EMOTE4D — fall detection that never keeps a picture of you"
+  description="A privacy-first fall-detection system for elderly care. It uses a camera, but no image is ever stored or sent — the device produces only an on-device stick figure. Pilot launching 2026 in Manitoba."
+>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Pilot launching 2026 &middot; Manitoba</p>
+        <h1>A fall detector that never keeps a picture of you.</h1>
+        <p class="hero-lead">
+          EMOTE4D watches for falls with a camera in the room. The picture never
+          leaves the device, and nothing is recorded. All it produces is a stick
+          figure &mdash; worked out on a small computer on-site, then discarded.
+        </p>
+        <div class="hero-actions">
+          <a href="/technology" class="btn btn-primary">How the privacy works</a>
+          <a href="/contact" class="btn btn-ghost">Join the waitlist</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <CameraToSkeleton />
+      </div>
+    </div>
+  </section>
+
+  <!-- THE IDEA -->
+  <section class="idea">
+    <div class="wrap idea-grid">
+      <div class="idea-head">
+        <p class="eyebrow">Privacy by architecture</p>
+        <h2>It is a camera.<br />That is the point.</h2>
+      </div>
+      <div class="idea-body prose">
+        <p class="lead">
+          Most fall sensors ask you to wear something, or they put a live view
+          of someone's home onto a company's servers. We didn't want either.
+        </p>
+        <p>
+          EMOTE4D uses a camera, but the picture is never saved and never sent
+          anywhere. Each frame is turned into a stick figure on a small computer
+          in the room, and the original image is thrown away in the same instant.
+          The stick figure is the only thing the system keeps or acts on.
+        </p>
+        <p>
+          So here is the honest version: yes, there is a camera. What ever leaves
+          the room is a drawing of where a body is &mdash; never a photograph of
+          a person.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE FORK -->
+  <section class="fork">
+    <div class="wrap">
+      <p class="eyebrow fork-eyebrow">Two ways in</p>
+      <div class="fork-grid">
+        <a href="/families" class="fork-card">
+          <h2>For families</h2>
+          <p>
+            Keeping an eye on a parent living alone, without putting a camera
+            feed of their life on someone else's server.
+          </p>
+          <span class="arrow-link">
+            For families
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </span>
+        </a>
+
+        <a href="/facilities" class="fork-card">
+          <h2>For care facilities</h2>
+          <p>
+            Fall coverage that passes a privacy review, runs without the cloud,
+            and is built to earn staff trust instead of flooding them with false
+            alarms.
+          </p>
+          <span class="arrow-link">
+            For care facilities
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how">
+    <div class="wrap">
+      <div class="how-head">
+        <p class="eyebrow">How it works</p>
+        <h2>From a room to a text message.</h2>
+      </div>
+      <ol class="steps">
+        {
+          steps.map((s) => (
+            <li class="step">
+              <span class="step-n" aria-hidden="true">{s.n}</span>
+              <div class="step-text">
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- WHAT IT IS / ISN'T -->
+  <section class="plainly">
+    <div class="wrap">
+      <div class="plainly-head">
+        <p class="eyebrow">Plainly</p>
+        <h2>What EMOTE4D is, and what it isn't.</h2>
+      </div>
+      <div class="plainly-grid">
+        <div>
+          <h3 class="plainly-label">It is</h3>
+          <ul class="mark-list is">
+            {
+              isList.map((item) => (
+                <li>
+                  <svg class="mark mark-is" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7" /></svg>
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div>
+          <h3 class="plainly-label">It isn't</h3>
+          <ul class="mark-list isnt">
+            {
+              isntList.map((item) => (
+                <li>
+                  <svg class="mark mark-isnt" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" /></svg>
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="philosophy">
+    <div class="wrap-narrow">
+      <blockquote>
+        We're not trying to out-research the big AI labs. We took tools they gave
+        away for free, ran them on a small computer in the room, and pointed them
+        at a problem those labs will never prioritize &mdash; helping an older
+        person stay in their own home, safely, a little longer.
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- PILOT CTA -->
+  <section class="pilot">
+    <div class="wrap pilot-inner">
+      <div class="pilot-copy">
+        <p class="eyebrow">The pilot</p>
+        <h2>We're starting in Manitoba.</h2>
+        <p>
+          EMOTE4D is pre-launch. The pilot begins in 2026 in Neepawa and Brandon.
+          If you're a family or a care facility there &mdash; or you just want to
+          follow along &mdash; join the waitlist and we'll be in touch.
+        </p>
+      </div>
+      <div class="pilot-action">
+        <a href="/contact" class="btn btn-primary">Join the waitlist</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  section {
+    padding-block: 4rem;
+  }
+
+  /* HERO */
+  .hero {
+    padding-top: 3.5rem;
+    padding-bottom: 4rem;
+  }
+  .hero-grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+  .hero-copy h1 {
+    font-size: var(--text-4xl);
+    margin: 1rem 0 0;
+    max-width: 14ch;
+  }
+  .hero-lead {
+    font-size: var(--text-lg);
+    color: var(--color-muted);
+    max-width: 34rem;
+    margin-top: 1.5rem;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .hero-visual {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  /* THE IDEA */
+  .idea {
+    border-top: 1px solid var(--color-line);
+    background: var(--color-pine-wash);
+  }
+  .idea-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  .idea-head h2 {
+    font-size: var(--text-3xl);
+    margin-top: 0.75rem;
+  }
+  .idea-body p:first-child {
+    margin-top: 0;
+  }
+
+  /* FORK */
+  .fork-eyebrow {
+    margin-bottom: 1.5rem;
+  }
+  .fork-grid {
+    display: grid;
+    border-top: 1px solid var(--color-line);
+  }
+  .fork-card {
+    display: block;
+    padding: 2.25rem 0;
+    border-bottom: 1px solid var(--color-line);
+    text-decoration: none;
+    color: inherit;
+  }
+  .fork-card h2 {
+    font-size: var(--text-2xl);
+    margin: 0;
+  }
+  .fork-card p {
+    color: var(--color-muted);
+    max-width: 36rem;
+    margin: 0.75rem 0 1.25rem;
+  }
+  .fork-card:hover h2 {
+    color: var(--color-pine);
+  }
+
+  /* HOW IT WORKS */
+  .how {
+    border-top: 1px solid var(--color-line);
+  }
+  .how-head {
+    margin-bottom: 2.5rem;
+  }
+  .how-head h2 {
+    font-size: var(--text-3xl);
+    margin-top: 0.75rem;
+  }
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--color-line-soft);
+  }
+  .step:last-child {
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+  .step-n {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    color: var(--color-pine);
+    line-height: 1.2;
+    font-feature-settings: "tnum";
+  }
+  .step-text h3 {
+    font-size: var(--text-xl);
+    margin: 0 0 0.4rem;
+  }
+  .step-text p {
+    color: var(--color-muted);
+    max-width: 44rem;
+    margin: 0;
+  }
+
+  /* PLAINLY */
+  .plainly {
+    border-top: 1px solid var(--color-line);
+    background: var(--color-paper-sunk);
+  }
+  .plainly-head {
+    margin-bottom: 2.5rem;
+  }
+  .plainly-head h2 {
+    font-size: var(--text-3xl);
+    margin-top: 0.75rem;
+  }
+  .plainly-grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .plainly-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .mark-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .mark-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.85rem;
+    align-items: start;
+    padding: 0.7rem 0;
+  }
+  .mark {
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+  }
+  .mark-is {
+    color: var(--color-pine);
+  }
+  .mark-isnt {
+    color: var(--color-terracotta);
+  }
+
+  /* PHILOSOPHY */
+  .philosophy {
+    border-top: 1px solid var(--color-line);
+    text-align: left;
+  }
+  .philosophy blockquote {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  /* PILOT */
+  .pilot {
+    border-top: 1px solid var(--color-line);
+  }
+  .pilot-inner {
+    display: grid;
+    gap: 2rem;
+    align-items: end;
+  }
+  .pilot-copy h2 {
+    font-size: var(--text-3xl);
+    margin: 0.75rem 0 1rem;
+  }
+  .pilot-copy p {
+    color: var(--color-muted);
+    max-width: 40rem;
+    margin: 0;
+  }
+
+  /* RESPONSIVE */
+  @media (min-width: 880px) {
+    section {
+      padding-block: 5.5rem;
+    }
+    .hero {
+      padding-top: 5rem;
+      padding-bottom: 6rem;
+    }
+    .hero-grid {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 4rem;
+    }
+    .hero-copy h1 {
+      font-size: var(--text-5xl);
+    }
+
+    .idea-grid {
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .fork-grid {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 3.5rem;
+    }
+    .fork-card {
+      border-bottom: none;
+    }
+    .fork-card:first-child {
+      padding-right: 3.5rem;
+      border-right: 1px solid var(--color-line);
+    }
+
+    .step {
+      grid-template-columns: 4rem 1fr;
+      gap: 2rem;
+    }
+
+    .plainly-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+
+    .pilot-inner {
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+    }
+  }
+</style>

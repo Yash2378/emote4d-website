@@ -1,0 +1,243 @@
+---
+import Base from "../layouts/Base.astro";
+import CameraToSkeleton from "../components/CameraToSkeleton.astro";
+import WaitlistCta from "../components/WaitlistCta.astro";
+
+const pipeline = [
+  {
+    n: "01",
+    title: "Capture, on a device in the room",
+    body: "A Raspberry Pi 5 with a Raspberry Pi Camera Module 3 (the NoIR variant, chosen so a dim bedroom at night is still workable) reads the camera feed. All processing happens here. There is no separate server doing the work.",
+  },
+  {
+    n: "02",
+    title: "Pose estimation, then the frame is gone",
+    body: "MediaPipe estimates body position from each frame and outputs a set of pose landmarks — the stick figure. The frame itself is held only in memory for that instant and is never written to disk or sent anywhere.",
+  },
+  {
+    n: "03",
+    title: "A first model screens for a fall",
+    body: "An on-device classifier looks at how the pose is moving and flags a possible fall. On its own, this stage is intentionally not the thing that alerts anyone.",
+  },
+  {
+    n: "04",
+    title: "A second stage confirms the person is down",
+    body: "A separate verification stage checks that the person is actually on the ground before the system treats it as real. Two stages, screening then confirmation, are how ordinary movement is kept from becoming an alarm.",
+  },
+  {
+    n: "05",
+    title: "Only a confirmed event leaves the room",
+    body: "If — and only if — the fall is confirmed, an SMS is sent to caregivers, after a short verification delay. The alert is the single thing that ever crosses the boundary of the device.",
+  },
+];
+
+const ledger = [
+  {
+    item: "The camera frame",
+    fate: "Lives in memory for an instant, never written to disk, never transmitted.",
+  },
+  {
+    item: "The pose landmarks (stick figure)",
+    fate: "The working data — the only representation the system reasons about.",
+  },
+  {
+    item: "A confirmed-fall event",
+    fate: "The one thing that leaves the device, as an SMS to caregivers.",
+  },
+];
+---
+
+<Base
+  title="EMOTE4D technology — privacy by architecture, not by policy"
+  description="The on-device architecture behind EMOTE4D: Raspberry Pi 5 and Camera Module 3, MediaPipe pose estimation, and a two-stage fall pipeline. No image is stored or transmitted; only a confirmed-fall SMS ever leaves the device."
+>
+  <section class="page-hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Technology</p>
+        <h1>Privacy by architecture, not by policy.</h1>
+        <p class="page-lead">
+          A privacy promise is only as good as the system behind it. Ours
+          doesn't rest on a setting you have to trust us to leave switched off
+          &mdash; the design simply never produces a stored image to misuse.
+        </p>
+      </div>
+      <div class="hero-visual">
+        <CameraToSkeleton caption="Input on the left, in memory only. Output on the right, the only thing that persists." />
+      </div>
+    </div>
+  </section>
+
+  <!-- The pipeline -->
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">The pipeline</p>
+      <h2>What happens between the camera and a text message.</h2>
+      <ol class="steps">
+        {
+          pipeline.map((s) => (
+            <li class="step">
+              <span class="step-n" aria-hidden="true">{s.n}</span>
+              <div>
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Data ledger -->
+  <section class="section panel">
+    <div class="wrap">
+      <p class="eyebrow">What data exists, and what doesn't</p>
+      <h2>Three pieces of data. Only one ever leaves.</h2>
+      <dl class="ledger">
+        {
+          ledger.map((row) => (
+            <div class="ledger-row">
+              <dt>{row.item}</dt>
+              <dd>{row.fate}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="note">
+        Because the frame is never persisted, there is no archive to breach, no
+        feed to log into, and nothing to hand over. That is what we mean by
+        privacy by architecture.
+      </p>
+    </div>
+  </section>
+
+  <!-- Honest scope -->
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">What we're not claiming</p>
+      <h2>The honest edges.</h2>
+      <div class="prose">
+        <p>
+          It is a camera, and we don't pretend otherwise &mdash; the privacy
+          comes from what the device refuses to keep, not from the absence of a
+          lens. There's no facial recognition anywhere in the system; it reads
+          posture and motion, not who you are. We're not publishing a
+          detection-accuracy figure, because the
+          number that matters is the one a real pilot produces, and we haven't
+          run that pilot yet. The tools underneath, like MediaPipe, are
+          well-established and openly available; our work is the on-device
+          pipeline and the discipline around when it's allowed to alert.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <WaitlistCta
+    eyebrow="Evaluating EMOTE4D"
+    title="Have a procurement or technical question?"
+    body="If you're assessing EMOTE4D for a facility or a family, get in touch and we'll answer plainly."
+    cta="Get in touch"
+  />
+</Base>
+
+<style>
+  .hero-grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+  .hero-visual {
+    display: flex;
+    justify-content: flex-start;
+  }
+  .section h2 {
+    font-size: var(--text-3xl);
+    margin: 0.75rem 0 0;
+    max-width: 26ch;
+  }
+  .panel {
+    background: var(--color-pine-wash);
+  }
+
+  /* pipeline steps */
+  .steps {
+    list-style: none;
+    margin: 2.5rem 0 0;
+    padding: 0;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--color-line-soft);
+  }
+  .step:last-child {
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+  .step-n {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    color: var(--color-pine);
+    font-feature-settings: "tnum";
+  }
+  .step h3 {
+    font-size: var(--text-xl);
+    margin: 0 0 0.4rem;
+  }
+  .step p {
+    color: var(--color-muted);
+    max-width: 46rem;
+    margin: 0;
+  }
+
+  /* data ledger */
+  .ledger {
+    margin: 2.5rem 0 0;
+    border-top: 1px solid var(--color-line);
+  }
+  .ledger-row {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+  .ledger dt {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    color: var(--color-ink);
+    margin-bottom: 0.3rem;
+  }
+  .ledger dd {
+    margin: 0;
+    color: var(--color-muted);
+    max-width: 44rem;
+  }
+  .note {
+    margin-top: 1.75rem;
+    max-width: 44rem;
+    color: var(--color-muted);
+  }
+  .prose {
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 880px) {
+    .hero-grid {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 4rem;
+    }
+    .step {
+      grid-template-columns: 4rem 1fr;
+      gap: 2rem;
+    }
+    .ledger-row {
+      display: grid;
+      grid-template-columns: 22rem 1fr;
+      gap: 2.5rem;
+      align-items: baseline;
+    }
+    .ledger dt {
+      margin-bottom: 0;
+    }
+  }
+</style>

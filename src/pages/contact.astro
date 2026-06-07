@@ -1,0 +1,225 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Contact EMOTE4D — join the waitlist"
+  description="Join the EMOTE4D waitlist or get in touch. Whether you're a family, a care facility, or evaluating the technology, tell us a little about your situation and we'll reach out."
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Contact</p>
+      <h1>Join the waitlist, or just say hello.</h1>
+      <p class="page-lead">
+        EMOTE4D is pre-launch. Tell us who you are and where you are, and we'll
+        be in touch as pilot spots open up. We read every message ourselves.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap contact-grid">
+      <!-- Left: plain details -->
+      <aside class="contact-info">
+        <div class="info-block">
+          <h2>Email</h2>
+          <p>
+            <a href="mailto:contact@emote4d.com" class="link"
+              >contact@emote4d.com</a
+            >
+          </p>
+        </div>
+        <div class="info-block">
+          <h2>Where we are</h2>
+          <p>Manitoba, Canada. The 2026 pilot starts in Neepawa and Brandon.</p>
+        </div>
+        <div class="info-block">
+          <h2>What happens next</h2>
+          <p>
+            Your message reaches the team directly. We'll reply when we have
+            something real to tell you &mdash; not an automated drip.
+          </p>
+        </div>
+      </aside>
+
+      <!-- Right: the Formspree form, segmented by who you are -->
+      <form
+        class="contact-form"
+        action="https://formspree.io/f/xjgkrove"
+        method="POST"
+      >
+        <input type="hidden" name="_subject" value="EMOTE4D — new waitlist / contact" />
+        <!-- Spam honeypot: must stay empty; hidden from people -->
+        <p class="hp" aria-hidden="true">
+          <label
+            >Leave this field empty
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </label>
+        </p>
+
+        <div class="field">
+          <label for="name">Your name</label>
+          <input type="text" id="name" name="name" required autocomplete="name" />
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            autocomplete="email"
+          />
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone <span class="opt">(optional)</span></label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel" />
+        </div>
+
+        <div class="field">
+          <label for="type">I am a&hellip;</label>
+          <select id="type" name="type" required>
+            <option value="" disabled selected>Choose one</option>
+            <option value="Family / caregiver">Family member or caregiver</option>
+            <option value="Care facility">Care facility</option>
+            <option value="Investor">Investor</option>
+            <option value="Other">Something else</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="location">Where you are <span class="opt">(optional)</span></label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            placeholder="City, province or state"
+          />
+        </div>
+
+        <div class="field">
+          <label for="message">Anything you'd like to add <span class="opt">(optional)</span></label>
+          <textarea id="message" name="message" rows="4"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary form-submit">Send</button>
+        <p class="form-note">
+          We'll only use what you send to get back to you about EMOTE4D.
+        </p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact-grid {
+    display: grid;
+    gap: 3rem;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .info-block h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-pine);
+    margin: 0 0 0.4rem;
+  }
+  .info-block p {
+    margin: 0;
+    color: var(--color-ink);
+    max-width: 24rem;
+  }
+
+  /* Form */
+  .contact-form {
+    background: var(--color-paper-sunk);
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    padding: 1.75rem;
+  }
+  .field {
+    margin-bottom: 1.25rem;
+  }
+  .field label {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--color-ink);
+  }
+  .opt {
+    font-weight: 400;
+    color: var(--color-faint);
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    color: var(--color-ink);
+    background: var(--color-paper);
+    border: 1.5px solid var(--color-line);
+    border-radius: 8px;
+    padding: 0.7rem 0.85rem;
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 6rem;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: var(--color-faint);
+  }
+  .field input:focus-visible,
+  .field select:focus-visible,
+  .field textarea:focus-visible {
+    border-color: var(--color-pine);
+    outline-offset: 0;
+  }
+  .field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235c564b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    background-size: 18px;
+    padding-right: 2.5rem;
+  }
+  .form-submit {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+  .form-note {
+    margin: 1rem 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-faint);
+    text-align: center;
+  }
+
+  /* Honeypot — visually and from layout removed, present for bots */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  @media (min-width: 880px) {
+    .contact-grid {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+</style>

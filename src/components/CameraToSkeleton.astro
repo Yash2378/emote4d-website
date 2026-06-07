@@ -1,0 +1,222 @@
+---
+/**
+ * The product's whole idea, made honest and visible:
+ * a camera viewfinder in which the captured frame resolves away,
+ * leaving only the on-device pose skeleton — the single thing the
+ * system ever produces. No stored image, no transmitted video.
+ *
+ * Hand-placed MediaPipe-style landmarks. Reveal is one-time and is
+ * fully removed under prefers-reduced-motion (skeleton shown static).
+ */
+interface Props {
+  caption?: string | null;
+  class?: string;
+}
+const {
+  caption = "This is everything the system ever sees.",
+  class: className = "",
+} = Astro.props;
+---
+
+<figure class={`c2s ${className}`}>
+  <svg
+    class="c2s-svg"
+    viewBox="0 0 440 480"
+    role="img"
+    aria-labelledby="c2s-title c2s-desc"
+    width="440"
+    height="480"
+  >
+    <title id="c2s-title">The on-device view</title>
+    <desc id="c2s-desc">
+      A camera viewfinder. The captured image fades, leaving only a simple
+      stick-figure skeleton — the only thing the device produces.
+    </desc>
+
+    <!-- Viewfinder surface -->
+    <rect
+      x="20"
+      y="20"
+      width="400"
+      height="440"
+      rx="14"
+      fill="var(--color-paper-sunk)"
+      stroke="var(--color-line)"
+      stroke-width="1.5"
+    ></rect>
+
+    <!-- The captured frame: an abstract human silhouette that resolves away -->
+    <g class="c2s-frame" aria-hidden="true">
+      <path
+        d="M220 70
+           c20 0 34 16 34 38
+           c0 14 -6 24 -14 31
+           c22 6 38 22 44 48
+           l14 78
+           c2 12 -6 18 -16 18
+           c-8 0 -14 -5 -16 -15
+           l-10 -52
+           l-6 150
+           c-1 14 -6 22 -16 22
+           c-9 0 -14 -7 -15 -20
+           l-4 -96
+           l-4 96
+           c-1 13 -6 20 -15 20
+           c-10 0 -15 -8 -16 -22
+           l-6 -150
+           l-10 52
+           c-2 10 -8 15 -16 15
+           c-10 0 -18 -6 -16 -18
+           l14 -78
+           c6 -26 22 -42 44 -48
+           c-8 -7 -14 -17 -14 -31
+           c0 -22 14 -38 34 -38 z"
+        fill="var(--color-faint)"
+      ></path>
+    </g>
+
+    <!-- The pose skeleton: the only persistent output -->
+    <g class="c2s-skeleton">
+      <!-- bones (pathLength=1 lets every segment draw at the same rate) -->
+      <path class="c2s-bone" pathLength="1" d="M220 119 L220 150"></path>
+      <path class="c2s-bone" pathLength="1" d="M180 152 L260 152"></path>
+      <path class="c2s-bone" pathLength="1" d="M220 150 L220 268"></path>
+      <path class="c2s-bone" pathLength="1" d="M180 152 L158 212 L150 270"
+      ></path>
+      <path class="c2s-bone" pathLength="1" d="M260 152 L282 212 L290 270"
+      ></path>
+      <path class="c2s-bone" pathLength="1" d="M194 268 L246 268"></path>
+      <path class="c2s-bone" pathLength="1" d="M194 268 L188 350 L184 430"
+      ></path>
+      <path class="c2s-bone" pathLength="1" d="M246 268 L252 350 L256 430"
+      ></path>
+
+      <!-- head -->
+      <circle class="c2s-head" cx="220" cy="95" r="24" pathLength="1"></circle>
+
+      <!-- joints -->
+      <g class="c2s-joints">
+        <circle cx="220" cy="150" r="6"></circle>
+        <circle cx="180" cy="152" r="6"></circle>
+        <circle cx="260" cy="152" r="6"></circle>
+        <circle cx="158" cy="212" r="6"></circle>
+        <circle cx="282" cy="212" r="6"></circle>
+        <circle cx="150" cy="270" r="6"></circle>
+        <circle cx="290" cy="270" r="6"></circle>
+        <circle cx="194" cy="268" r="6"></circle>
+        <circle cx="246" cy="268" r="6"></circle>
+        <circle cx="188" cy="350" r="6"></circle>
+        <circle cx="252" cy="350" r="6"></circle>
+        <circle cx="184" cy="430" r="6"></circle>
+        <circle cx="256" cy="430" r="6"></circle>
+      </g>
+    </g>
+
+    <!-- Corner brackets — reads as a viewfinder, drawn last so they sit on top -->
+    <g
+      stroke="var(--color-ink)"
+      stroke-width="2.5"
+      fill="none"
+      stroke-linecap="round"
+      aria-hidden="true"
+    >
+      <path d="M44 64 L44 44 L64 44"></path>
+      <path d="M376 44 L396 44 L396 64"></path>
+      <path d="M44 416 L44 436 L64 436"></path>
+      <path d="M396 416 L396 436 L376 436"></path>
+    </g>
+  </svg>
+
+  {caption && <figcaption class="c2s-caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .c2s {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.1rem;
+  }
+  .c2s-svg {
+    width: 100%;
+    max-width: 26rem;
+    height: auto;
+  }
+  .c2s-caption {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-lg);
+    line-height: 1.35;
+    color: var(--color-muted);
+    max-width: 22rem;
+  }
+
+  .c2s-bone {
+    fill: none;
+    stroke: var(--color-pine);
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .c2s-head {
+    fill: none;
+    stroke: var(--color-pine);
+    stroke-width: 5;
+  }
+  .c2s-joints circle {
+    fill: var(--color-pine);
+  }
+
+  /* One-time resolve: frame fades, bones draw, joints + head settle in */
+  .c2s-frame {
+    opacity: 0.42;
+    animation: c2s-dissolve 1.6s ease forwards;
+  }
+  .c2s-bone {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: c2s-draw 1.1s ease 0.35s forwards;
+  }
+  .c2s-head {
+    opacity: 0;
+    animation: c2s-settle 0.6s ease 0.9s forwards;
+  }
+  .c2s-joints {
+    opacity: 0;
+    animation: c2s-settle 0.5s ease 1.05s forwards;
+  }
+
+  @keyframes c2s-dissolve {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes c2s-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes c2s-settle {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* No motion: show the honest end-state only, instantly */
+  @media (prefers-reduced-motion: reduce) {
+    .c2s-frame {
+      opacity: 0;
+      animation: none;
+    }
+    .c2s-bone {
+      stroke-dashoffset: 0;
+      animation: none;
+    }
+    .c2s-head,
+    .c2s-joints {
+      opacity: 1;
+      animation: none;
+    }
+  }
+</style>

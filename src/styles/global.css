@@ -1,0 +1,261 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   EMOTE4D design tokens
+   Warm ivory paper, warm near-black ink, one calm pine accent,
+   sparing terracotta. Humanist serif headlines + clean sans body.
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  /* Surfaces & ink */
+  --color-paper: #fbf8f3; /* warm ivory background */
+  --color-paper-sunk: #f4efe5; /* slightly deeper panel */
+  --color-ink: #1c1b19; /* warm near-black text */
+  --color-muted: #5c564b; /* secondary text — ~6.7:1 on paper (AA) */
+  --color-faint: #6f6757; /* tertiary text — ~5.3:1 on paper, ~4.9:1 on sunk (AA) */
+
+  /* The single accent */
+  --color-pine: #2f5d50; /* primary — ~7:1 on paper (AA) */
+  --color-pine-deep: #244a40; /* hover / pressed */
+  --color-pine-wash: #eaf0ed; /* faint pine tint for quiet panels */
+
+  /* Sparing warm accent — large text / marks only (≈4:1) */
+  --color-terracotta: #b8643e;
+
+  /* Warm neutral lines */
+  --color-line: #ded6c6;
+  --color-line-soft: #ebe4d6;
+
+  /* Type */
+  --font-serif: "Fraunces Variable", "Fraunces", Georgia, "Times New Roman",
+    serif;
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+
+  /* Editorial type scale (base 19px) */
+  --text-xs: 0.8125rem; /* 13px */
+  --text-sm: 0.9375rem; /* 15px */
+  --text-base: 1.1875rem; /* 19px — body floor ≥18px */
+  --text-lg: 1.375rem; /* 22px */
+  --text-xl: 1.625rem; /* 26px */
+  --text-2xl: 2rem; /* 32px */
+  --text-3xl: 2.625rem; /* 42px */
+  --text-4xl: 3.375rem; /* 54px */
+  --text-5xl: 4.25rem; /* 68px */
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+html {
+  font-size: 19px; /* accessible floor; audience skews older */
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-weight: 460;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Visible, consistent keyboard focus everywhere */
+:focus-visible {
+  outline: 2.5px solid var(--color-pine);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Selection in the brand accent */
+::selection {
+  background: var(--color-pine);
+  color: var(--color-paper);
+}
+
+/* ── Layout helpers ───────────────────────────────────────── */
+.wrap {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+@media (min-width: 768px) {
+  .wrap {
+    padding-inline: 2.5rem;
+  }
+}
+
+.wrap-narrow {
+  width: 100%;
+  max-width: 48rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+@media (min-width: 768px) {
+  .wrap-narrow {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* A thin warm rule used to divide editorial sections */
+.rule {
+  border: 0;
+  border-top: 1px solid var(--color-line);
+}
+
+/* Small all-caps eyebrow label */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-pine);
+}
+
+/* ── Buttons / links ──────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.9rem 1.4rem;
+  border-radius: 6px;
+  border: 1.5px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.btn-primary {
+  background-color: var(--color-pine);
+  color: var(--color-paper);
+}
+.btn-primary:hover {
+  background-color: var(--color-pine-deep);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-ink);
+  border-color: var(--color-line);
+}
+.btn-ghost:hover {
+  border-color: var(--color-ink);
+}
+
+/* Inline text link with a calm underline */
+.link {
+  color: var(--color-pine);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: color-mix(in srgb, var(--color-pine) 40%, transparent);
+}
+.link:hover {
+  text-decoration-color: var(--color-pine);
+}
+
+/* An arrow link — reads as a quiet directional cue */
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-pine);
+  font-weight: 600;
+  text-decoration: none;
+}
+.arrow-link svg {
+  transition: transform 0.15s ease;
+}
+.arrow-link:hover svg {
+  transform: translateX(3px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .arrow-link:hover svg {
+    transform: none;
+  }
+}
+
+/* Generous, readable body copy for long-form sections */
+.prose p {
+  max-width: 38rem;
+  margin-block: 1.1em;
+  color: var(--color-ink);
+}
+.prose p.lead {
+  font-size: var(--text-lg);
+  color: var(--color-muted);
+}
+
+/* ── Shared page scaffolding ───────────────────────────────── */
+.page-hero {
+  padding-top: 3.5rem;
+  padding-bottom: 3rem;
+}
+.page-hero h1 {
+  font-size: var(--text-4xl);
+  margin-top: 1rem;
+  max-width: 20ch;
+}
+.page-lead {
+  font-size: var(--text-lg);
+  color: var(--color-muted);
+  max-width: 38rem;
+  margin-top: 1.25rem;
+}
+
+.section {
+  padding-block: 3.5rem;
+  border-top: 1px solid var(--color-line);
+}
+.section > .wrap > h2,
+.section > .wrap-narrow > h2 {
+  font-size: var(--text-3xl);
+}
+
+.measure {
+  max-width: 38rem;
+}
+
+@media (min-width: 880px) {
+  .page-hero {
+    padding-top: 5rem;
+    padding-bottom: 4rem;
+  }
+  .page-hero h1 {
+    font-size: var(--text-5xl);
+  }
+  .section {
+    padding-block: 5rem;
+  }
+}

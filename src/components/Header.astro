@@ -1,0 +1,222 @@
+---
+const path = Astro.url.pathname;
+// Treat "/families/" and "/families" the same.
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path.startsWith(href);
+
+const nav = [
+  { href: "/families", label: "For families" },
+  { href: "/facilities", label: "For care facilities" },
+  { href: "/technology", label: "Technology" },
+  { href: "/about", label: "About" },
+];
+---
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="/" class="wordmark" aria-label="EMOTE4D — home">
+      EMOTE<span>4D</span>
+    </a>
+
+    <!-- Desktop navigation -->
+    <nav class="nav-desktop" aria-label="Primary">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a href="/contact" class="btn btn-primary nav-cta">Join the waitlist</a>
+    </nav>
+
+    <!-- Mobile navigation: a native disclosure, no JavaScript -->
+    <details class="nav-mobile">
+      <summary aria-label="Toggle menu">
+        <span class="menu-bars" aria-hidden="true"></span>
+        <span class="menu-word">Menu</span>
+      </summary>
+      <div class="nav-mobile-panel">
+        <ul>
+          {
+            nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href="/contact" class="mobile-cta">Join the waitlist</a>
+          </li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: var(--color-paper);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 4.5rem;
+    gap: 1.5rem;
+  }
+
+  .wordmark {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .wordmark span {
+    color: var(--color-pine);
+  }
+
+  /* Desktop nav */
+  .nav-desktop {
+    display: none;
+    align-items: center;
+    gap: 2rem;
+  }
+  .nav-desktop ul {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-desktop a {
+    font-size: var(--text-base);
+    color: var(--color-muted);
+    text-decoration: none;
+    padding-block: 0.25rem;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease;
+  }
+  .nav-desktop a:hover {
+    color: var(--color-ink);
+  }
+  .nav-desktop a[aria-current="page"] {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-pine);
+  }
+  /* Higher specificity than `.nav-desktop a` so the CTA keeps its paper text */
+  .nav-desktop a.nav-cta {
+    padding: 0.65rem 1.1rem;
+    font-size: var(--text-sm);
+    color: var(--color-paper);
+    border-bottom: none;
+  }
+  .nav-desktop a.nav-cta:hover {
+    color: var(--color-paper);
+  }
+
+  /* Mobile nav (native <details> disclosure) */
+  .nav-mobile {
+    position: relative;
+  }
+  .nav-mobile summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    list-style: none;
+    padding: 0.5rem 0.25rem;
+    font-size: var(--text-base);
+    color: var(--color-ink);
+  }
+  .nav-mobile summary::-webkit-details-marker {
+    display: none;
+  }
+  .menu-bars,
+  .menu-bars::before,
+  .menu-bars::after {
+    content: "";
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--color-ink);
+    position: relative;
+  }
+  .menu-bars::before {
+    position: absolute;
+    top: -7px;
+  }
+  .menu-bars::after {
+    position: absolute;
+    top: 7px;
+  }
+  .menu-word {
+    font-weight: 500;
+  }
+  .nav-mobile-panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    min-width: 16rem;
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: 10px;
+    box-shadow: 0 8px 28px -16px rgba(28, 27, 25, 0.35);
+    padding: 0.5rem;
+  }
+  .nav-mobile-panel ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-mobile-panel a {
+    display: block;
+    padding: 0.85rem 1rem;
+    font-size: var(--text-base);
+    color: var(--color-ink);
+    text-decoration: none;
+    border-radius: 6px;
+  }
+  .nav-mobile-panel a:hover {
+    background: var(--color-paper-sunk);
+  }
+  .nav-mobile-panel a[aria-current="page"] {
+    color: var(--color-pine);
+    font-weight: 600;
+  }
+  .mobile-cta {
+    margin-top: 0.25rem;
+    color: var(--color-pine) !important;
+    font-weight: 600;
+    border-top: 1px solid var(--color-line-soft);
+  }
+
+  @media (min-width: 880px) {
+    .nav-desktop {
+      display: flex;
+    }
+    .nav-mobile {
+      display: none;
+    }
+  }
+</style>

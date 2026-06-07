@@ -1,0 +1,160 @@
+---
+import Base from "../layouts/Base.astro";
+import WaitlistCta from "../components/WaitlistCta.astro";
+
+const team = [
+  { initials: "YD", name: "Yash Darji", role: "Founder & CEO" },
+  { initials: "MP", name: "Meet Patel", role: "Co-founder" },
+  { initials: "BP", name: "Bhavesh Patel", role: "Advisor" },
+];
+---
+
+<Base
+  title="About EMOTE4D — why we're building it"
+  description="EMOTE4D is a small team building privacy-first fall detection for elderly care, with a pilot launching in 2026 in Manitoba. Founded by Yash Darji, with Meet Patel and advisor Bhavesh Patel."
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">About</p>
+      <h1>Why we're building this.</h1>
+      <p class="page-lead">
+        A fall at home, alone, with no way to call for help, is one of the
+        quietest and most common ways an older person's independence ends. The
+        tools that could catch it have existed for a while. The reason they're
+        not in more homes usually comes down to dignity.
+      </p>
+    </div>
+  </section>
+
+  <!-- The belief -->
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">What we believe</p>
+      <h2>You shouldn't have to trade privacy for safety.</h2>
+      <div class="prose">
+        <p>
+          People resist a pendant because it's a label that says "old and at
+          risk," worn around the neck all day. They resist a camera because it
+          turns a home into something watched. Both are reasonable. Both leave
+          the actual problem &mdash; a fall no one finds out about &mdash;
+          unsolved.
+        </p>
+        <p>
+          We started EMOTE4D to remove the trade-off rather than ask people to
+          accept it. A camera makes the detection possible; refusing to keep the
+          picture is what makes it something you'd allow in a bedroom. The whole
+          design follows from holding both of those at once.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="section panel">
+    <div class="wrap">
+      <p class="eyebrow">The team</p>
+      <h2>A small team, working on one thing.</h2>
+      <ul class="team">
+        {
+          team.map((m) => (
+            <li class="member">
+              <span class="monogram" aria-hidden="true">{m.initials}</span>
+              <span class="member-text">
+                <span class="member-name">{m.name}</span>
+                <span class="member-role">{m.role}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Where things stand -->
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">Where things stand</p>
+      <h2>Pre-launch, and saying so.</h2>
+      <div class="prose">
+        <p>
+          EMOTE4D hasn't shipped yet. We're heading into a pilot in 2026 in
+          Neepawa and Brandon, Manitoba, because that's where we can be close
+          enough to install the devices ourselves and learn from real homes and
+          care settings. We'd rather grow from one place we understand than claim
+          a reach we don't have.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <WaitlistCta
+    eyebrow="Get involved"
+    title="Want to follow along, or take part?"
+    body="Families, care facilities, and anyone who cares about this problem — join the waitlist and we'll keep you posted as the pilot takes shape."
+  />
+</Base>
+
+<style>
+  .section h2 {
+    font-size: var(--text-3xl);
+    margin: 0.75rem 0 0;
+    max-width: 24ch;
+  }
+  .panel {
+    background: var(--color-pine-wash);
+  }
+  .prose {
+    margin-top: 2rem;
+  }
+
+  .team {
+    list-style: none;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .member {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--color-line-soft);
+  }
+  .member:last-child {
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+  .monogram {
+    flex-shrink: 0;
+    width: 3.25rem;
+    height: 3.25rem;
+    display: grid;
+    place-items: center;
+    border: 1.5px solid var(--color-pine);
+    border-radius: 50%;
+    color: var(--color-pine);
+    font-family: var(--font-serif);
+    font-size: var(--text-base);
+    letter-spacing: 0.02em;
+  }
+  .member-text {
+    display: flex;
+    flex-direction: column;
+  }
+  .member-name {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    color: var(--color-ink);
+  }
+  .member-role {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 880px) {
+    .team {
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 4rem;
+    }
+  }
+</style>

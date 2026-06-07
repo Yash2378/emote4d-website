@@ -1,0 +1,183 @@
+---
+import Base from "../layouts/Base.astro";
+import CameraToSkeleton from "../components/CameraToSkeleton.astro";
+import WaitlistCta from "../components/WaitlistCta.astro";
+---
+
+<Base
+  title="EMOTE4D for families — know they're okay, without watching them"
+  description="A fall detector for a parent living alone. It uses a camera but never keeps the picture, there's nothing to wear, and you get a text if they fall. Pilot launching 2026 in Manitoba."
+>
+  <section class="page-hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">For families</p>
+        <h1>Know they're okay, without watching them.</h1>
+        <p class="page-lead">
+          If a parent lives alone, a fall on the kitchen floor with no way to
+          call for help is the thing that keeps you up at night. EMOTE4D is built
+          for exactly that moment &mdash; and it does it without putting a video
+          feed of their daily life on anyone's server.
+        </p>
+        <div class="hero-actions">
+          <a href="/contact" class="btn btn-primary">Join the waitlist</a>
+          <a href="/technology" class="btn btn-ghost">How the privacy works</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <CameraToSkeleton caption="A parent's home, as the system sees it." />
+      </div>
+    </div>
+  </section>
+
+  <!-- The problem, named honestly -->
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">The honest trade-off</p>
+      <h2>The usual options each ask you to give something up.</h2>
+      <div class="cols">
+        <div class="measure">
+          <h3>A pendant they have to wear</h3>
+          <p>
+            It works only if it's on them, charged, and they can still press it
+            after a fall. The ones who need it most are the ones who leave it on
+            the nightstand.
+          </p>
+        </div>
+        <div class="measure">
+          <h3>A camera you watch</h3>
+          <p>
+            A normal home camera trades the worry for a different one: now
+            there's a live view of your parent's bathroom and bedroom sitting on
+            a company's servers. Most people can't bring themselves to put one in.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What EMOTE4D does -->
+  <section class="section panel">
+    <div class="wrap">
+      <p class="eyebrow">What EMOTE4D does instead</p>
+      <h2>A camera that turns your parent into a stick figure, and forgets the rest.</h2>
+      <div class="prose">
+        <p class="lead">
+          The device sees the room, works out body position on the spot, and
+          throws the picture away. There is no recording to leak and no feed for
+          anyone &mdash; including us &mdash; to watch.
+        </p>
+        <p>
+          Nothing to wear. Nothing to charge. Nothing to remember. It sits in the
+          corner and does its job whether or not anyone thinks about it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What happens in a fall -->
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">If a fall happens</p>
+      <h2>You get a text. Quickly, but not falsely.</h2>
+      <div class="cols">
+        <div class="measure">
+          <h3>A short wait, on purpose</h3>
+          <p>
+            When the system thinks it has seen a fall, it takes a second look to
+            confirm the person is on the ground before it does anything. That
+            pause is the difference between a real alert and a false one.
+          </p>
+        </div>
+        <div class="measure">
+          <h3>An SMS to the people you choose</h3>
+          <p>
+            Once a fall is confirmed, EMOTE4D sends a text message to the
+            caregivers on the list &mdash; you, a sibling, a neighbour down the
+            road. A plain message, not an app you have to keep open.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Honest about where we are -->
+  <section class="section panel">
+    <div class="wrap">
+      <p class="eyebrow">Before you sign up</p>
+      <h2>Where things honestly stand.</h2>
+      <div class="prose">
+        <p>
+          EMOTE4D is pre-launch. The first pilot is in 2026 in Neepawa and
+          Brandon, Manitoba, so the earliest spots are for families there. It is
+          a safety aid, not a medical device, and not a replacement for checking
+          in on someone you love.
+        </p>
+        <p>
+          If that's the kind of thing you've been looking for, the waitlist is
+          the way to be first in line.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <WaitlistCta
+    title="Add your family to the waitlist."
+    body="Tell us a little about your situation and where you are. We'll reach out as pilot spots open up."
+  />
+</Base>
+
+<style>
+  .hero-grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .hero-visual {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .section h2 {
+    font-size: var(--text-3xl);
+    margin: 0.75rem 0 0;
+    max-width: 24ch;
+  }
+  .panel {
+    background: var(--color-pine-wash);
+  }
+
+  .cols {
+    display: grid;
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+  }
+  .cols h3 {
+    font-size: var(--text-xl);
+    margin: 0 0 0.5rem;
+  }
+  .cols p {
+    color: var(--color-muted);
+    margin: 0;
+  }
+  .prose {
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 880px) {
+    .hero-grid {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 4rem;
+    }
+    .cols {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+</style>

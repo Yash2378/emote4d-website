@@ -1,0 +1,52 @@
+---
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  cta?: string;
+  href?: string;
+}
+const {
+  eyebrow = "The pilot",
+  title = "We're starting in Manitoba.",
+  body = "EMOTE4D is pre-launch. The pilot begins in 2026 in Neepawa and Brandon. Join the waitlist and we'll be in touch.",
+  cta = "Join the waitlist",
+  href = "/contact",
+} = Astro.props;
+---
+
+<section class="section cta-band">
+  <div class="wrap cta-inner">
+    <div class="cta-copy">
+      <p class="eyebrow">{eyebrow}</p>
+      <h2>{title}</h2>
+      <p>{body}</p>
+    </div>
+    <div class="cta-action">
+      <a href={href} class="btn btn-primary">{cta}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-inner {
+    display: grid;
+    gap: 2rem;
+    align-items: end;
+  }
+  .cta-copy h2 {
+    font-size: var(--text-3xl);
+    margin: 0.75rem 0 1rem;
+  }
+  .cta-copy p {
+    color: var(--color-muted);
+    max-width: 40rem;
+    margin: 0;
+  }
+  @media (min-width: 880px) {
+    .cta-inner {
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+    }
+  }
+</style>

@@ -1,0 +1,100 @@
+---
+const year = 2026;
+const nav = [
+  { href: "/families", label: "For families" },
+  { href: "/facilities", label: "For care facilities" },
+  { href: "/technology", label: "Technology" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+---
+
+<footer class="site-footer">
+  <hr class="rule" />
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="wordmark" aria-label="EMOTE4D — home">
+        EMOTE<span>4D</span>
+      </a>
+      <p class="footer-line">
+        Privacy-first fall detection. Pilot launching 2026 in Manitoba.
+      </p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <ul>
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="wrap footer-meta">
+    <p>&copy; {year} EMOTE4D</p>
+    <p><a href="mailto:contact@emote4d.com" class="link">contact@emote4d.com</a></p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 5rem;
+    padding-bottom: 2.5rem;
+  }
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 2.5rem;
+  }
+  .footer-brand .wordmark {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .footer-brand .wordmark span {
+    color: var(--color-pine);
+  }
+  .footer-line {
+    margin-top: 0.6rem;
+    max-width: 22rem;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+  .footer-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .footer-nav a {
+    font-size: var(--text-base);
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .footer-nav a:hover {
+    color: var(--color-pine);
+  }
+  .footer-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    font-size: var(--text-sm);
+    color: var(--color-faint);
+  }
+  .footer-meta p {
+    margin: 0;
+  }
+
+  @media (min-width: 720px) {
+    .footer-inner {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+  }
+</style>
