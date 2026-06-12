@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
-import CameraToSkeleton from "../components/CameraToSkeleton.astro";
+import PrivacyLens from "../components/PrivacyLens.astro";
+import FallToText from "../components/FallToText.astro";
 import WaitlistCta from "../components/WaitlistCta.astro";
 
 const pipeline = [
@@ -45,33 +46,75 @@ const ledger = [
     fate: "The one thing that leaves the device, as an SMS to caregivers.",
   },
 ];
+
+const dontList = [
+  {
+    head: "We don't store or transmit video.",
+    rest: "There is no footage, anywhere.",
+  },
+  {
+    head: "We don't identify people.",
+    rest: "No facial recognition — the system reads posture and motion, not who you are.",
+  },
+  {
+    head: "We don't depend on the cloud for safety.",
+    rest: "The core detection runs locally and works offline.",
+  },
+  {
+    head: "We don't require a wearable.",
+    rest: "Nothing for a resident to charge, wear, or refuse.",
+  },
+];
 ---
 
 <Base
   title="EMOTE4D technology — privacy by architecture, not by policy"
-  description="The on-device architecture behind EMOTE4D: Raspberry Pi 5 and Camera Module 3, MediaPipe pose estimation, and a two-stage fall pipeline. No image is stored or transmitted; only a confirmed-fall SMS ever leaves the device."
+  description="The on-device architecture behind EMOTE4D: Raspberry Pi 5 and Camera Module 3, MediaPipe pose estimation, a two-stage fall pipeline with a backup timer. No image is stored or transmitted; only a confirmed-fall SMS ever leaves the device."
 >
   <section class="page-hero">
-    <div class="wrap hero-grid">
-      <div>
-        <p class="eyebrow">Technology</p>
-        <h1>Privacy by architecture, not by policy.</h1>
-        <p class="page-lead">
-          A privacy promise is only as good as the system behind it. Ours
-          doesn't rest on a setting you have to trust us to leave switched off
-          &mdash; the design simply never produces a stored image to misuse.
-        </p>
+    <div class="wrap">
+      <p class="eyebrow">Technology</p>
+      <h1>Privacy by architecture, not by policy.</h1>
+      <p class="page-lead">
+        A privacy promise is only as good as the system behind it. Ours
+        doesn't rest on a setting you have to trust us to leave switched off
+        &mdash; the design simply never produces a stored image to misuse.
+      </p>
+    </div>
+  </section>
+
+  <!-- What the system actually sees -->
+  <section class="section" data-rise>
+    <div class="wrap sees-grid">
+      <div class="sees-copy">
+        <p class="eyebrow">What the system actually sees</p>
+        <h2>The image becomes a stick figure. Then it's gone.</h2>
+        <div class="prose">
+          <p>
+            A camera in the room captures a frame. On the device, that frame
+            is turned into a stick figure &mdash; a set of body points &mdash;
+            and the original image is discarded immediately. The stick figure
+            is all the rest of the system ever works with.
+          </p>
+          <p>
+            Because the conversion happens on the device and the image never
+            leaves it, there is no recording to store, no stream to intercept,
+            and no cloud copy to secure. Privacy isn't a setting you enable or
+            a promise in a contract &mdash; it's a consequence of how the
+            system is built.
+          </p>
+        </div>
       </div>
-      <div class="hero-visual">
-        <CameraToSkeleton caption="Input on the left, in memory only. Output on the right, the only thing that persists." />
+      <div class="sees-visual">
+        <PrivacyLens caption="This is everything the system ever sees." />
       </div>
     </div>
   </section>
 
-  <!-- The pipeline -->
-  <section class="section">
+  <!-- How detection works -->
+  <section class="section" data-rise>
     <div class="wrap">
-      <p class="eyebrow">The pipeline</p>
+      <p class="eyebrow">How detection works</p>
       <h2>What happens between the camera and a text message.</h2>
       <ol class="steps">
         {
@@ -86,14 +129,116 @@ const ledger = [
           ))
         }
       </ol>
+      <aside class="backup">
+        <h3>And a second safety net, on a timer.</h3>
+        <p>
+          A backup timer runs alongside the pipeline: if someone has been on
+          the ground longer than they should be, the system can raise an alert
+          even when the first stage didn't catch the moment of the fall.
+        </p>
+      </aside>
+
+      <div class="demo-block">
+        <p class="demo-intro">
+          Here is that sequence, drawn from the stick figure the device
+          actually produces. Timings compressed.
+        </p>
+        <FallToText />
+      </div>
     </div>
   </section>
 
-  <!-- Data ledger -->
-  <section class="section panel">
+  <!-- Where the data goes -->
+  <section class="section panel" data-rise>
     <div class="wrap">
-      <p class="eyebrow">What data exists, and what doesn't</p>
+      <p class="eyebrow">Where the data goes</p>
       <h2>Three pieces of data. Only one ever leaves.</h2>
+
+      <figure class="flow-figure">
+        <div
+          class="flow-scroll"
+          tabindex="0"
+          role="group"
+          aria-label="Diagram: where the data goes. Scroll horizontally if needed."
+        >
+          <svg
+            viewBox="0 0 880 400"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-labelledby="flow-title flow-desc"
+          >
+            <title id="flow-title">Where the data goes</title>
+            <desc id="flow-desc">
+              The room is read by the camera on the device. On the device, the
+              frame is held in memory only, becomes a stick figure, then passes
+              check one (screen) and check two (verify). Only a confirmed fall
+              leaves the device, as an SMS to caregivers. A crossed-out branch
+              to cloud and storage shows the path that does not exist: no image
+              ever takes it.
+            </desc>
+
+            <!-- The room -->
+            <rect class="f-line-ink" x="24" y="118" width="116" height="88" rx="10" fill="none"></rect>
+            <text class="f-t" x="82" y="146" text-anchor="middle">The room</text>
+            <circle class="f-line-ink" cx="82" cy="164" r="6" fill="none"></circle>
+            <path class="f-line-ink" d="M82 170v16M71 177h22M82 186l-9 12M82 186l9 12" fill="none"></path>
+
+            <!-- room -> device -->
+            <path class="f-line-pine" d="M140 162h44M177 156l8 6-8 6" fill="none"></path>
+
+            <!-- The device -->
+            <rect class="f-line-ink" x="188" y="64" width="470" height="196" rx="14" fill="none"></rect>
+            <text class="f-t" x="206" y="94">The device</text>
+            <text class="f-s" x="206" y="113">a Raspberry Pi 5 &#8212; everything happens here</text>
+
+            <rect class="f-line-ink f-chip" x="206" y="136" width="96" height="60" rx="8"></rect>
+            <text class="f-t" x="254" y="161" text-anchor="middle">Camera</text>
+            <text class="f-t" x="254" y="180" text-anchor="middle">frame</text>
+            <text class="f-s" x="254" y="218" text-anchor="middle">held in memory only</text>
+
+            <path class="f-line-pine" d="M303 166h12M310 161l7 5-7 5" fill="none"></path>
+
+            <rect class="f-line-ink f-chip" x="320" y="136" width="96" height="60" rx="8"></rect>
+            <text class="f-t" x="368" y="161" text-anchor="middle">Stick</text>
+            <text class="f-t" x="368" y="180" text-anchor="middle">figure</text>
+
+            <path class="f-line-pine" d="M417 166h12M424 161l7 5-7 5" fill="none"></path>
+
+            <rect class="f-line-ink f-chip" x="434" y="136" width="96" height="60" rx="8"></rect>
+            <text class="f-t" x="482" y="161" text-anchor="middle">Check 1</text>
+            <text class="f-s" x="482" y="180" text-anchor="middle">screen</text>
+
+            <path class="f-line-pine" d="M531 166h12M538 161l7 5-7 5" fill="none"></path>
+
+            <rect class="f-line-ink f-chip" x="548" y="136" width="96" height="60" rx="8"></rect>
+            <text class="f-t" x="596" y="161" text-anchor="middle">Check 2</text>
+            <text class="f-s" x="596" y="180" text-anchor="middle">verify</text>
+
+            <!-- device -> SMS -->
+            <path class="f-line-pine" d="M658 162h42M693 156l8 6-8 6" fill="none"></path>
+
+            <rect class="f-line-pine f-chip-pine" x="702" y="120" width="152" height="84" rx="10"></rect>
+            <text class="f-t f-tp" x="778" y="156" text-anchor="middle">SMS to</text>
+            <text class="f-t f-tp" x="778" y="176" text-anchor="middle">caregivers</text>
+            <text class="f-s" x="778" y="226" text-anchor="middle">the only thing that leaves</text>
+
+            <!-- the path that doesn't exist -->
+            <path class="f-line-terra f-dash" d="M325 260v52" fill="none"></path>
+            <path class="f-line-terra" d="M317 278l16 16M333 278l-16 16" fill="none"></path>
+            <rect class="f-line-terra f-dash" x="250" y="312" width="150" height="58" rx="10" fill="none"></rect>
+            <text class="f-t f-tt" x="325" y="346" text-anchor="middle">Cloud / storage</text>
+            <text class="f-s f-tt" x="420" y="346">No image ever takes this path.</text>
+          </svg>
+        </div>
+        <figcaption>
+          Read as text: the room &rarr; the device (camera frame, held in
+          memory only &rarr; stick figure &rarr; check 1, screen &rarr; check
+          2, verify) &rarr; an SMS to caregivers. The crossed-out branch to
+          cloud / storage is the path that doesn't exist &mdash; no image ever
+          takes it.
+        </figcaption>
+      </figure>
+
       <dl class="ledger">
         {
           ledger.map((row) => (
@@ -112,45 +257,109 @@ const ledger = [
     </div>
   </section>
 
+  <!-- At the edge -->
+  <section class="section" data-rise>
+    <div class="wrap edge-grid">
+      <div class="edge-head">
+        <p class="eyebrow">At the edge</p>
+        <h2>It runs in the room, not in a data center.</h2>
+      </div>
+      <div class="prose edge-body">
+        <p>
+          Everything above happens on a small computer in the room &mdash; the
+          Raspberry Pi &mdash; not on a server somewhere else. The system works
+          offline and doesn't depend on a cloud service staying online to keep
+          watching. Running at the edge is also what makes the privacy model
+          possible: the data never has anywhere else to go.
+        </p>
+        <p>
+          The camera is night-capable &mdash; the NoIR variant of the Camera
+          Module 3 &mdash; so the system keeps working in a dark bedroom, where
+          some of the most serious falls happen.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- Honest scope -->
-  <section class="section">
+  <section class="section" data-rise>
     <div class="wrap">
-      <p class="eyebrow">What we're not claiming</p>
+      <p class="eyebrow">What we deliberately don't do</p>
       <h2>The honest edges.</h2>
+      <ul class="dont-list">
+        {
+          dontList.map((item) => (
+            <li>
+              <svg
+                class="dont-mark"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <path d="M7 7l10 10M17 7L7 17" />
+              </svg>
+              <span>
+                <strong>{item.head}</strong> {item.rest}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
       <div class="prose">
         <p>
           It is a camera, and we don't pretend otherwise &mdash; the privacy
-          comes from what the device refuses to keep, not from the absence of a
-          lens. There's no facial recognition anywhere in the system; it reads
-          posture and motion, not who you are. We're not publishing a
-          detection-accuracy figure, because the
-          number that matters is the one a real pilot produces, and we haven't
-          run that pilot yet. The tools underneath, like MediaPipe, are
-          well-established and openly available; our work is the on-device
-          pipeline and the discipline around when it's allowed to alert.
+          comes from what the device refuses to keep, not from the absence of
+          a lens. The tools underneath, like MediaPipe, are well-established
+          and openly available; our work is the on-device pipeline and the
+          discipline around when it's allowed to alert.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Performance honesty -->
+  <section class="section" data-rise>
+    <div class="wrap">
+      <p class="eyebrow">Performance</p>
+      <h2>How we talk about performance.</h2>
+      <div class="prose">
+        <p>
+          Fall detection has a well-documented honesty problem: numbers that
+          look excellent in a lab routinely collapse in real homes and care
+          settings. We take that seriously, and we're not publishing a
+          detection-accuracy figure &mdash; the number that matters is the one
+          a real pilot produces, and we haven't run that pilot yet.
+        </p>
+        <p>
+          The pilot is where we'll measure performance in real conditions
+          &mdash; night, clutter, real movement &mdash; and we plan to put the
+          system through independent third-party testing rather than rely on
+          our own figures. When we publish results, we'll report the raw
+          numbers and the limitations alongside them. If you're evaluating us,
+          hold us to that.
+        </p>
+        <p>
+          Have a procurement or technical question?
+          <a href="/contact" class="link">Get in touch</a> and we'll answer
+          plainly.
         </p>
       </div>
     </div>
   </section>
 
   <WaitlistCta
-    eyebrow="Evaluating EMOTE4D"
-    title="Have a procurement or technical question?"
-    body="If you're assessing EMOTE4D for a facility or a family, get in touch and we'll answer plainly."
-    cta="Get in touch"
+    eyebrow="Evaluate it"
+    title="Want to look closer?"
+    body="EMOTE4D is pre-launch, piloting in Manitoba in 2026. If you're evaluating the technology, join the waitlist or write to us and we'll walk you through it."
   />
 </Base>
 
 <style>
-  .hero-grid {
-    display: grid;
-    gap: 3rem;
-    align-items: center;
-  }
-  .hero-visual {
-    display: flex;
-    justify-content: flex-start;
-  }
   .section h2 {
     font-size: var(--text-3xl);
     margin: 0.75rem 0 0;
@@ -158,6 +367,16 @@ const ledger = [
   }
   .panel {
     background: var(--color-pine-wash);
+  }
+  .prose {
+    margin-top: 1.5rem;
+  }
+
+  /* what it sees */
+  .sees-grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
   }
 
   /* pipeline steps */
@@ -180,6 +399,7 @@ const ledger = [
     font-family: var(--font-serif);
     font-size: var(--text-xl);
     color: var(--color-pine);
+    line-height: 1.2;
     font-feature-settings: "tnum";
   }
   .step h3 {
@@ -190,6 +410,103 @@ const ledger = [
     color: var(--color-muted);
     max-width: 46rem;
     margin: 0;
+  }
+
+  /* backup timer */
+  .backup {
+    margin-top: 2.25rem;
+    padding: 1.25rem 1.5rem;
+    max-width: 46rem;
+    border-left: 3px solid var(--color-pine);
+    background: var(--color-pine-wash);
+    border-radius: 0 10px 10px 0;
+  }
+  .backup h3 {
+    font-size: var(--text-lg);
+    margin: 0 0 0.4rem;
+  }
+  .backup p {
+    margin: 0;
+    color: var(--color-muted);
+  }
+
+  /* demo */
+  .demo-block {
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--color-line-soft);
+  }
+  .demo-intro {
+    color: var(--color-muted);
+    max-width: 40rem;
+    margin: 0 0 2rem;
+  }
+
+  /* data-flow diagram */
+  .flow-figure {
+    margin: 2.5rem 0 0;
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    padding: 1.25rem;
+  }
+  .flow-scroll {
+    overflow-x: auto;
+  }
+  .flow-scroll svg {
+    display: block;
+    min-width: 760px;
+    width: 100%;
+    height: auto;
+  }
+  .flow-figure figcaption {
+    margin-top: 1rem;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    max-width: 44rem;
+  }
+  .f-line-ink,
+  .f-line-pine,
+  .f-line-terra {
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .f-line-ink {
+    stroke: var(--color-ink);
+  }
+  .f-line-pine {
+    stroke: var(--color-pine);
+  }
+  .f-line-terra {
+    stroke: var(--color-terracotta);
+  }
+  .f-dash {
+    stroke-dasharray: 4 5;
+  }
+  .f-chip {
+    fill: var(--color-paper-sunk);
+  }
+  .f-chip-pine {
+    fill: var(--color-pine-wash);
+  }
+  .f-t {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 600;
+    fill: var(--color-ink);
+  }
+  .f-s {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    fill: var(--color-muted);
+  }
+  .f-tp {
+    fill: var(--color-pine);
+  }
+  .f-tt {
+    fill: var(--color-terracotta);
   }
 
   /* data ledger */
@@ -217,18 +534,58 @@ const ledger = [
     max-width: 44rem;
     color: var(--color-muted);
   }
-  .prose {
-    margin-top: 2rem;
+
+  /* at the edge */
+  .edge-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  .edge-body p:first-child {
+    margin-top: 0;
+  }
+
+  /* honest edges */
+  .dont-list {
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0;
+  }
+  .dont-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.85rem;
+    align-items: start;
+    padding: 0.9rem 0;
+    border-top: 1px solid var(--color-line-soft);
+  }
+  .dont-list li:last-child {
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+  .dont-list span {
+    color: var(--color-muted);
+    max-width: 46rem;
+  }
+  .dont-list strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+  .dont-mark {
+    color: var(--color-terracotta);
+    margin-top: 0.25rem;
+    flex-shrink: 0;
   }
 
   @media (min-width: 880px) {
-    .hero-grid {
+    .sees-grid {
       grid-template-columns: 1.05fr 0.95fr;
       gap: 4rem;
     }
     .step {
       grid-template-columns: 4rem 1fr;
       gap: 2rem;
+    }
+    .flow-figure {
+      padding: 1.75rem;
     }
     .ledger-row {
       display: grid;
@@ -238,6 +595,11 @@ const ledger = [
     }
     .ledger dt {
       margin-bottom: 0;
+    }
+    .edge-grid {
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 4rem;
+      align-items: start;
     }
   }
 </style>

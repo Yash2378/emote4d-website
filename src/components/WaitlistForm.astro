@@ -1,0 +1,209 @@
+---
+/**
+ * Compact waitlist form, embeddable anywhere. Posts to the same
+ * Formspree inbox as the contact page, tagged as a quick join.
+ *
+ * Works three ways, in order of grace:
+ * 1. JS on: AJAX submit, inline confirmation, no page change.
+ * 2. JS off: normal POST to Formspree's hosted thank-you page.
+ * 3. Formspree down: inline error with a mailto fallback.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+const FORM_ENDPOINT = "https://formspree.io/f/xjgkrove";
+---
+
+<form class={`wl ${className}`} action={FORM_ENDPOINT} method="POST" novalidate>
+  <input type="hidden" name="_subject" value="EMOTE4D — waitlist (quick join)" />
+  <input type="hidden" name="form" value="waitlist-inline" />
+  <p class="wl-hp" aria-hidden="true">
+    <label>
+      Leave this field empty
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+    </label>
+  </p>
+
+  <div class="wl-fields">
+    <div class="wl-field">
+      <label for={`wl-email-${className || "x"}`}>Email</label>
+      <input
+        type="email"
+        id={`wl-email-${className || "x"}`}
+        name="email"
+        required
+        autocomplete="email"
+        placeholder="you@example.com"
+      />
+    </div>
+    <div class="wl-field">
+      <label for={`wl-type-${className || "x"}`}>I am a&hellip;</label>
+      <select id={`wl-type-${className || "x"}`} name="type" required>
+        <option value="" disabled selected>Choose one</option>
+        <option value="Family / caregiver">Family member or caregiver</option>
+        <option value="Care facility">Care facility</option>
+        <option value="Other">Something else</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary wl-submit">
+      <span class="wl-submit-label">Join the waitlist</span>
+    </button>
+  </div>
+
+  <p class="wl-note">No spam, no drip campaign. We write when there's something real.</p>
+
+  <div class="wl-done" hidden>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>
+    <p>
+      <strong>You're on the list.</strong> We read every signup ourselves and
+      we'll be in touch as pilot spots open.
+    </p>
+  </div>
+
+  <p class="wl-error" hidden>
+    Something went wrong sending that. Please try again, or email
+    <a href="mailto:contact@emote4d.com" class="link">contact@emote4d.com</a> directly.
+  </p>
+</form>
+
+<style>
+  .wl {
+    width: 100%;
+  }
+
+  .wl-fields {
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .wl-field label {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    color: var(--color-ink);
+  }
+
+  .wl-field input,
+  .wl-field select {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    color: var(--color-ink);
+    background: var(--color-paper);
+    border: 1.5px solid var(--color-line);
+    border-radius: 8px;
+    padding: 0.7rem 0.85rem;
+  }
+  .wl-field input::placeholder {
+    color: var(--color-faint);
+  }
+  .wl-field input:focus-visible,
+  .wl-field select:focus-visible {
+    border-color: var(--color-pine);
+    outline-offset: 0;
+  }
+  .wl-field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235c564b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    background-size: 18px;
+    padding-right: 2.5rem;
+  }
+
+  .wl-submit {
+    justify-content: center;
+  }
+  .wl-submit[disabled] {
+    opacity: 0.7;
+    cursor: default;
+  }
+
+  .wl-note {
+    margin: 0.85rem 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-faint);
+  }
+
+  .wl-done {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    align-items: start;
+    background: var(--color-pine-wash);
+    border: 1px solid color-mix(in srgb, var(--color-pine) 25%, transparent);
+    border-radius: 10px;
+    padding: 1rem 1.15rem;
+    color: var(--color-pine);
+  }
+  .wl-done p {
+    margin: 0;
+    color: var(--color-ink);
+  }
+  .wl-done svg {
+    margin-top: 0.2rem;
+  }
+
+  .wl-error {
+    margin: 0.85rem 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-terracotta);
+  }
+
+  .wl-hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  @media (min-width: 720px) {
+    .wl-fields {
+      grid-template-columns: 1.2fr 1fr auto;
+      align-items: end;
+    }
+  }
+</style>
+
+<script>
+  function initWaitlist(form) {
+    if (form.dataset.init) return;
+    form.dataset.init = "1";
+
+    const fields = form.querySelector(".wl-fields");
+    const note = form.querySelector(".wl-note");
+    const done = form.querySelector(".wl-done");
+    const error = form.querySelector(".wl-error");
+    const btn = form.querySelector(".wl-submit");
+    const label = form.querySelector(".wl-submit-label");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      error.hidden = true;
+      btn.disabled = true;
+      label.textContent = "Sending…";
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        fields.hidden = true;
+        note.hidden = true;
+        done.hidden = false;
+        done.setAttribute("role", "status");
+      } catch {
+        error.hidden = false;
+        btn.disabled = false;
+        label.textContent = "Join the waitlist";
+      }
+    });
+  }
+
+  document.querySelectorAll("form.wl").forEach(initWaitlist);
+</script>

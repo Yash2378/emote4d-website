@@ -1,0 +1,261 @@
+---
+/**
+ * The product's whole idea, made tactile: one room, one person,
+ * two ways of seeing. Left of the divider — what an ordinary
+ * cloud camera ships off-site. Right — the anonymous stick figure
+ * that is the only thing EMOTE4D ever produces.
+ *
+ * The SAME pose data drives both sides; the divider is draggable
+ * by pointer and keyboard (a real range input). Under
+ * prefers-reduced-motion the figure holds still but the divider
+ * still works — the comparison is the point, not the motion.
+ */
+interface Props {
+  caption?: string | null;
+  class?: string;
+}
+const {
+  caption = "Drag the line. The right side is everything the system ever sees.",
+  class: className = "",
+} = Astro.props;
+---
+
+<figure class={`lens ${className}`}>
+  <div class="lens-stage">
+    <canvas class="lens-canvas" aria-hidden="true"></canvas>
+    <span class="lens-label lens-label-left" aria-hidden="true">An ordinary camera</span>
+    <span class="lens-label lens-label-right" aria-hidden="true">EMOTE4D</span>
+    <label class="lens-slider">
+      <span class="sr-only">
+        Comparison slider: reveal more of the ordinary camera view or more of
+        the EMOTE4D stick-figure view
+      </span>
+      <input type="range" min="8" max="92" value="46" step="1" />
+    </label>
+  </div>
+  {caption && <figcaption class="lens-caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .lens {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .lens-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--color-paper-sunk);
+  }
+
+  .lens-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+    cursor: ew-resize;
+  }
+
+  .lens-label {
+    position: absolute;
+    top: 0.85rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    pointer-events: none;
+  }
+  .lens-label-left {
+    left: 0.85rem;
+    background: rgba(28, 27, 25, 0.55);
+    color: #f0eadf;
+  }
+  .lens-label-right {
+    right: 0.85rem;
+    background: var(--color-pine-wash);
+    color: var(--color-pine);
+    border: 1px solid color-mix(in srgb, var(--color-pine) 25%, transparent);
+  }
+
+  /* The range input IS the divider for keyboard and screen readers.
+     Visually transparent; the canvas draws the handle. */
+  .lens-slider {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+  .lens-slider input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+  }
+  /* Visible keyboard-focus ring on the whole stage */
+  .lens-slider input:focus-visible {
+    opacity: 1;
+    appearance: none;
+    background: transparent;
+    outline: 3px solid var(--color-pine);
+    outline-offset: -3px;
+    border-radius: 14px;
+  }
+  .lens-slider input:focus-visible::-webkit-slider-thumb {
+    appearance: none;
+    width: 0;
+    height: 0;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .lens-caption {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-lg);
+    line-height: 1.35;
+    color: var(--color-muted);
+    max-width: 26rem;
+  }
+</style>
+
+<script>
+  import { makeSim, reducedMotion, WALK, sampleLoop, drawSkeleton, drawMosaic } from "../lib/sim.js";
+
+  function initLens(root) {
+    const canvas = root.querySelector(".lens-canvas");
+    const range = root.querySelector("input[type=range]");
+    if (!canvas || canvas.dataset.init) return;
+    canvas.dataset.init = "1";
+
+    const pose = new Float64Array(34);
+    const tiny = document.createElement("canvas");
+    tiny.width = 30;
+    tiny.height = 24;
+
+    let split = Number(range.value) / 100;
+
+    function scene(ctx, t, view) {
+      const { W, H } = view;
+      const sx = split * W;
+
+      sampleLoop(WALK, reducedMotion ? 0.18 : t / 1400, pose);
+
+      /* ---- left: the ordinary camera ---- */
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, sx, H);
+      ctx.clip();
+      drawMosaic(tiny, pose, t);
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(tiny, 0, 0, W, H);
+      ctx.imageSmoothingEnabled = true;
+      ctx.restore();
+
+      /* ---- right: what EMOTE4D keeps ---- */
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(sx, 0, W - sx, H);
+      ctx.clip();
+      ctx.fillStyle = "#f4efe5";
+      ctx.fillRect(sx, 0, W - sx, H);
+      // ground line
+      ctx.strokeStyle = "#ded6c6";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(sx, H * 0.92);
+      ctx.lineTo(W, H * 0.92);
+      ctx.stroke();
+      drawSkeleton(ctx, pose, W * 0.5, H * 0.92, H * 0.78, "#2f5d50", Math.max(2.5, H * 0.011));
+      ctx.restore();
+
+      /* ---- the divider ---- */
+      ctx.strokeStyle = "#1c1b19";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(sx, 0);
+      ctx.lineTo(sx, H);
+      ctx.stroke();
+      // handle
+      const hy = H * 0.5;
+      ctx.fillStyle = "#fbf8f3";
+      ctx.beginPath();
+      ctx.arc(sx, hy, 17, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#1c1b19";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      // arrows in the handle
+      ctx.beginPath();
+      ctx.moveTo(sx - 9, hy);
+      ctx.lineTo(sx - 4, hy - 4.5);
+      ctx.moveTo(sx - 9, hy);
+      ctx.lineTo(sx - 4, hy + 4.5);
+      ctx.moveTo(sx + 9, hy);
+      ctx.lineTo(sx + 4, hy - 4.5);
+      ctx.moveTo(sx + 9, hy);
+      ctx.lineTo(sx + 4, hy + 4.5);
+      ctx.stroke();
+    }
+
+    const sim = makeSim(canvas, {
+      render: (ctx, t, dt, view) => {
+        ctx.clearRect(0, 0, view.W, view.H);
+        scene(ctx, t, view);
+      },
+      renderStill: (ctx, view) => scene(ctx, 0, view),
+      fps: 30,
+    });
+
+    function setSplit(v) {
+      split = Math.min(0.92, Math.max(0.08, v));
+      range.value = String(Math.round(split * 100));
+      if (reducedMotion) sim.redraw();
+    }
+
+    range.addEventListener("input", () => setSplit(Number(range.value) / 100));
+
+    // direct pointer drag on the canvas (range input already covers it,
+    // but explicit drag keeps the handle under the finger on touch)
+    let dragging = false;
+    canvas.parentElement.addEventListener("pointerdown", (e) => {
+      dragging = true;
+      const r = canvas.getBoundingClientRect();
+      setSplit((e.clientX - r.left) / r.width);
+    });
+    window.addEventListener(
+      "pointermove",
+      (e) => {
+        if (!dragging) return;
+        const r = canvas.getBoundingClientRect();
+        setSplit((e.clientX - r.left) / r.width);
+      },
+      { passive: true }
+    );
+    window.addEventListener("pointerup", () => (dragging = false));
+  }
+
+  document.querySelectorAll(".lens").forEach(initLens);
+</script>

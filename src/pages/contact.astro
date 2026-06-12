@@ -104,14 +104,65 @@ import Base from "../layouts/Base.astro";
           <textarea id="message" name="message" rows="4"></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary form-submit">Send</button>
+        <button type="submit" class="btn btn-primary form-submit">
+          <span class="submit-label">Send</span>
+        </button>
         <p class="form-note">
           We'll only use what you send to get back to you about EMOTE4D.
         </p>
+
+        <p class="form-error" hidden>
+          Something went wrong sending that. Please try again, or email
+          <a href="mailto:contact@emote4d.com" class="link">contact@emote4d.com</a> directly.
+        </p>
       </form>
+
+      <div class="form-done" hidden role="status">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>
+        <div>
+          <h2>Got it — you're on the list.</h2>
+          <p>
+            Your message reached us. We read every one ourselves, and we'll be
+            in touch as pilot spots open up. No automated drip, no spam.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 </Base>
+
+<script>
+  const form = document.querySelector("form.contact-form");
+  if (form) {
+    const done = document.querySelector(".form-done");
+    const error = form.querySelector(".form-error");
+    const btn = form.querySelector(".form-submit");
+    const label = form.querySelector(".submit-label");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      error.hidden = true;
+      btn.disabled = true;
+      label.textContent = "Sending…";
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.hidden = true;
+        done.hidden = false;
+        done.scrollIntoView({ block: "center", behavior: "smooth" });
+      } catch {
+        error.hidden = false;
+        btn.disabled = false;
+        label.textContent = "Send";
+      }
+    });
+  }
+</script>
 
 <style>
   .contact-grid {
@@ -213,6 +264,42 @@ import Base from "../layouts/Base.astro";
     width: 1px;
     height: 1px;
     overflow: hidden;
+  }
+
+  .form-submit[disabled] {
+    opacity: 0.7;
+    cursor: default;
+  }
+  .form-error {
+    margin: 1rem 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-terracotta);
+    text-align: center;
+  }
+
+  /* Success panel — replaces the form after an AJAX send */
+  .form-done {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: start;
+    background: var(--color-pine-wash);
+    border: 1px solid color-mix(in srgb, var(--color-pine) 25%, transparent);
+    border-radius: 12px;
+    padding: 1.75rem;
+    color: var(--color-pine);
+  }
+  .form-done h2 {
+    font-size: var(--text-xl);
+    margin: 0 0 0.5rem;
+  }
+  .form-done p {
+    margin: 0;
+    color: var(--color-ink);
+    max-width: 30rem;
+  }
+  .form-done svg {
+    margin-top: 0.3rem;
   }
 
   @media (min-width: 880px) {

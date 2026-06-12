@@ -7,6 +7,20 @@ const team = [
   { initials: "MP", name: "Meet Patel", role: "Co-founder" },
   { initials: "BP", name: "Bhavesh Patel", role: "Advisor" },
 ];
+
+// Only true facts, stated quietly — not a timeline of promises.
+const status = [
+  { term: "Stage", detail: "Pre-launch. Nothing has shipped yet." },
+  { term: "Pilot", detail: "2026, starting in Neepawa and Brandon, Manitoba." },
+  {
+    term: "Hardware",
+    detail: "Raspberry Pi 5 with a Raspberry Pi Camera Module 3.",
+  },
+  {
+    term: "Processing",
+    detail: "On the device. No image is ever stored or transmitted.",
+  },
+];
 ---
 
 <Base
@@ -27,30 +41,35 @@ const team = [
   </section>
 
   <!-- The belief -->
-  <section class="section">
-    <div class="wrap">
-      <p class="eyebrow">What we believe</p>
-      <h2>You shouldn't have to trade privacy for safety.</h2>
-      <div class="prose">
-        <p>
+  <section class="section belief" data-rise>
+    <div class="wrap belief-grid">
+      <div class="belief-head">
+        <p class="eyebrow">What we believe</p>
+        <h2>You shouldn't have to trade privacy for safety.</h2>
+      </div>
+      <div class="prose belief-body">
+        <p class="lead">
           People resist a pendant because it's a label that says "old and at
           risk," worn around the neck all day. They resist a camera because it
           turns a home into something watched. Both are reasonable. Both leave
           the actual problem &mdash; a fall no one finds out about &mdash;
           unsolved.
         </p>
-        <p>
-          We started EMOTE4D to remove the trade-off rather than ask people to
-          accept it. A camera makes the detection possible; refusing to keep the
-          picture is what makes it something you'd allow in a bedroom. The whole
-          design follows from holding both of those at once.
-        </p>
       </div>
+    </div>
+
+    <div class="wrap-narrow mission-wrap">
+      <blockquote class="mission">
+        We started EMOTE4D to remove the trade-off rather than ask people to
+        accept it. A camera makes the detection possible; refusing to keep the
+        picture is what makes it something you'd allow in a bedroom. The whole
+        design follows from holding both of those at once.
+      </blockquote>
     </div>
   </section>
 
   <!-- Team -->
-  <section class="section panel">
+  <section class="section panel" data-rise>
     <div class="wrap">
       <p class="eyebrow">The team</p>
       <h2>A small team, working on one thing.</h2>
@@ -71,27 +90,41 @@ const team = [
   </section>
 
   <!-- Where things stand -->
-  <section class="section">
-    <div class="wrap">
-      <p class="eyebrow">Where things stand</p>
-      <h2>Pre-launch, and saying so.</h2>
-      <div class="prose">
-        <p>
-          EMOTE4D hasn't shipped yet. We're heading into a pilot in 2026 in
-          Neepawa and Brandon, Manitoba, because that's where we can be close
-          enough to install the devices ourselves and learn from real homes and
-          care settings. We'd rather grow from one place we understand than claim
-          a reach we don't have.
-        </p>
+  <section class="section standing" data-rise>
+    <div class="wrap standing-grid">
+      <div class="standing-copy">
+        <p class="eyebrow">Where things stand</p>
+        <h2>Pre-launch, and saying so.</h2>
+        <div class="prose">
+          <p>
+            EMOTE4D hasn't shipped yet. We're heading into a pilot in 2026 in
+            Neepawa and Brandon, Manitoba, because that's where we can be close
+            enough to install the devices ourselves and learn from real homes
+            and care settings. We'd rather grow from one place we understand
+            than claim a reach we don't have.
+          </p>
+          <p>
+            Families, care facilities, and anyone who cares about this problem
+            &mdash; join the waitlist below and we'll keep you posted as the
+            pilot takes shape.
+          </p>
+        </div>
       </div>
+
+      <dl class="status">
+        {
+          status.map((s) => (
+            <div class="status-row">
+              <dt>{s.term}</dt>
+              <dd>{s.detail}</dd>
+            </div>
+          ))
+        }
+      </dl>
     </div>
   </section>
 
-  <WaitlistCta
-    eyebrow="Get involved"
-    title="Want to follow along, or take part?"
-    body="Families, care facilities, and anyone who cares about this problem — join the waitlist and we'll keep you posted as the pilot takes shape."
-  />
+  <WaitlistCta />
 </Base>
 
 <style>
@@ -103,26 +136,53 @@ const team = [
   .panel {
     background: var(--color-pine-wash);
   }
-  .prose {
-    margin-top: 2rem;
+
+  /* The belief — heading beside the setup paragraph, then the
+     mission statement given room of its own. */
+  .belief-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  .belief-body p {
+    margin-block: 0;
   }
 
+  /* Mission statement — the page's editorial moment. */
+  .mission-wrap {
+    margin-top: 3rem;
+  }
+  .mission {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+  .mission::before {
+    content: "";
+    display: block;
+    width: 3rem;
+    border-top: 2px solid var(--color-terracotta);
+    margin-bottom: 1.75rem;
+  }
+
+  /* Team roster */
   .team {
     list-style: none;
     margin: 2.5rem 0 0;
     padding: 0;
-    display: grid;
-    gap: 1rem;
   }
   .member {
     display: flex;
     align-items: center;
     gap: 1.25rem;
     padding: 1.25rem 0;
-    border-top: 1px solid var(--color-line-soft);
+    border-top: 1px solid var(--color-line);
   }
   .member:last-child {
-    border-bottom: 1px solid var(--color-line-soft);
+    border-bottom: 1px solid var(--color-line);
   }
   .monogram {
     flex-shrink: 0;
@@ -140,6 +200,7 @@ const team = [
   .member-text {
     display: flex;
     flex-direction: column;
+    flex: 1;
   }
   .member-name {
     font-family: var(--font-serif);
@@ -151,10 +212,63 @@ const team = [
     color: var(--color-muted);
   }
 
+  /* Where things stand — prose beside a quiet definition list. */
+  .standing-grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .standing-copy .prose {
+    margin-top: 2rem;
+  }
+  .status {
+    margin: 0;
+    align-self: start;
+  }
+  .status-row {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--color-line-soft);
+  }
+  .status-row:last-child {
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+  .status dt {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+    padding-top: 0.2rem;
+  }
+  .status dd {
+    margin: 0;
+    color: var(--color-ink);
+  }
+
   @media (min-width: 880px) {
-    .team {
+    .belief-grid {
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .mission-wrap {
+      margin-top: 4.5rem;
+    }
+
+    /* Roster rows read name → role across the line. */
+    .member-text {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .standing-grid {
       grid-template-columns: 1fr 1fr;
-      gap: 1rem 4rem;
+      gap: 4rem;
+      align-items: start;
     }
   }
 </style>

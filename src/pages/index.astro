@@ -1,6 +1,8 @@
 ---
 import Base from "../layouts/Base.astro";
-import CameraToSkeleton from "../components/CameraToSkeleton.astro";
+import PrivacyLens from "../components/PrivacyLens.astro";
+import FallToText from "../components/FallToText.astro";
+import WaitlistCta from "../components/WaitlistCta.astro";
 
 const steps = [
   {
@@ -62,13 +64,13 @@ const isntList = [
       </div>
 
       <div class="hero-visual">
-        <CameraToSkeleton />
+        <PrivacyLens />
       </div>
     </div>
   </section>
 
   <!-- THE IDEA -->
-  <section class="idea">
+  <section class="idea" data-rise>
     <div class="wrap idea-grid">
       <div class="idea-head">
         <p class="eyebrow">Privacy by architecture</p>
@@ -95,7 +97,7 @@ const isntList = [
   </section>
 
   <!-- THE FORK -->
-  <section class="fork">
+  <section class="fork" data-rise>
     <div class="wrap">
       <p class="eyebrow fork-eyebrow">Two ways in</p>
       <div class="fork-grid">
@@ -128,7 +130,7 @@ const isntList = [
   </section>
 
   <!-- HOW IT WORKS -->
-  <section class="how">
+  <section class="how" data-rise>
     <div class="wrap">
       <div class="how-head">
         <p class="eyebrow">How it works</p>
@@ -150,8 +152,24 @@ const isntList = [
     </div>
   </section>
 
+  <!-- LIVE DEMO -->
+  <section class="demo" id="demo" data-rise>
+    <div class="wrap">
+      <div class="demo-head">
+        <p class="eyebrow">Watch it happen</p>
+        <h2>A fall, two checks, one text.</h2>
+        <p class="demo-lead">
+          This is the same sequence the device runs, drawn from the stick figure
+          it actually produces. The timings here are compressed so you don't
+          have to wait.
+        </p>
+      </div>
+      <FallToText />
+    </div>
+  </section>
+
   <!-- WHAT IT IS / ISN'T -->
-  <section class="plainly">
+  <section class="plainly" data-rise>
     <div class="wrap">
       <div class="plainly-head">
         <p class="eyebrow">Plainly</p>
@@ -189,7 +207,7 @@ const isntList = [
   </section>
 
   <!-- PHILOSOPHY -->
-  <section class="philosophy">
+  <section class="philosophy" data-rise>
     <div class="wrap-narrow">
       <blockquote>
         We're not trying to out-research the big AI labs. We took tools they gave
@@ -200,23 +218,8 @@ const isntList = [
     </div>
   </section>
 
-  <!-- PILOT CTA -->
-  <section class="pilot">
-    <div class="wrap pilot-inner">
-      <div class="pilot-copy">
-        <p class="eyebrow">The pilot</p>
-        <h2>We're starting in Manitoba.</h2>
-        <p>
-          EMOTE4D is pre-launch. The pilot begins in 2026 in Neepawa and Brandon.
-          If you're a family or a care facility there &mdash; or you just want to
-          follow along &mdash; join the waitlist and we'll be in touch.
-        </p>
-      </div>
-      <div class="pilot-action">
-        <a href="/contact" class="btn btn-primary">Join the waitlist</a>
-      </div>
-    </div>
-  </section>
+  <!-- PILOT CTA + WAITLIST -->
+  <WaitlistCta />
 </Base>
 
 <style>
@@ -252,8 +255,7 @@ const isntList = [
     margin-top: 2rem;
   }
   .hero-visual {
-    display: flex;
-    justify-content: flex-start;
+    width: 100%;
   }
 
   /* THE IDEA */
@@ -344,10 +346,27 @@ const isntList = [
     margin: 0;
   }
 
+  /* LIVE DEMO */
+  .demo {
+    border-top: 1px solid var(--color-line);
+    background: var(--color-paper-sunk);
+  }
+  .demo-head {
+    margin-bottom: 2.5rem;
+  }
+  .demo-head h2 {
+    font-size: var(--text-3xl);
+    margin-top: 0.75rem;
+  }
+  .demo-lead {
+    color: var(--color-muted);
+    max-width: 40rem;
+    margin-top: 1rem;
+  }
+
   /* PLAINLY */
   .plainly {
     border-top: 1px solid var(--color-line);
-    background: var(--color-paper-sunk);
   }
   .plainly-head {
     margin-bottom: 2.5rem;
@@ -409,25 +428,6 @@ const isntList = [
     text-wrap: balance;
   }
 
-  /* PILOT */
-  .pilot {
-    border-top: 1px solid var(--color-line);
-  }
-  .pilot-inner {
-    display: grid;
-    gap: 2rem;
-    align-items: end;
-  }
-  .pilot-copy h2 {
-    font-size: var(--text-3xl);
-    margin: 0.75rem 0 1rem;
-  }
-  .pilot-copy p {
-    color: var(--color-muted);
-    max-width: 40rem;
-    margin: 0;
-  }
-
   /* RESPONSIVE */
   @media (min-width: 880px) {
     section {
@@ -438,7 +438,7 @@ const isntList = [
       padding-bottom: 6rem;
     }
     .hero-grid {
-      grid-template-columns: 1.05fr 0.95fr;
+      grid-template-columns: 1fr 1fr;
       gap: 4rem;
     }
     .hero-copy h1 {
@@ -470,11 +470,6 @@ const isntList = [
 
     .plainly-grid {
       grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-    }
-
-    .pilot-inner {
-      grid-template-columns: 1fr auto;
       gap: 4rem;
     }
   }

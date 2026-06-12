@@ -1,0 +1,374 @@
+---
+/**
+ * The detection story, demonstrated instead of described.
+ * A figure walks; you (or a timer) trigger a fall; the two on-device
+ * checks light in order; after the short verification delay an SMS
+ * arrives — and the counter underneath stays at zero images, because
+ * that is the entire product.
+ *
+ * Times in the demo are compressed and labeled as such. Under
+ * prefers-reduced-motion nothing autoplays; the button toggles
+ * between the two composed states with no tweening.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<div class={`ftt ${className}`}>
+  <div class="ftt-stage">
+    <canvas class="ftt-canvas" aria-hidden="true"></canvas>
+    <span class="ftt-room" aria-hidden="true">Living room · on-device view</span>
+  </div>
+
+  <div class="ftt-side">
+    <ol class="ftt-checks">
+      <li class="ftt-check" data-check="1">
+        <span class="ftt-dot" aria-hidden="true"></span>
+        <div>
+          <strong>Check one — screen.</strong>
+          <span>The motion looks like a fall.</span>
+        </div>
+      </li>
+      <li class="ftt-check" data-check="2">
+        <span class="ftt-dot" aria-hidden="true"></span>
+        <div>
+          <strong>Check two — verify.</strong>
+          <span>The person really is on the ground.</span>
+        </div>
+      </li>
+      <li class="ftt-check" data-check="3">
+        <span class="ftt-dot" aria-hidden="true"></span>
+        <div>
+          <strong>Short delay, on purpose.</strong>
+          <span>Compressed in this demo. It exists to cut false alarms.</span>
+        </div>
+      </li>
+    </ol>
+
+    <div class="ftt-sms" role="status">
+      <div class="ftt-bubble">
+        <span class="ftt-sms-from">SMS · to the caregivers you chose</span>
+        <p class="ftt-sms-text"></p>
+      </div>
+    </div>
+
+    <p class="ftt-ledger">
+      Images stored during this event: <strong>0</strong> &nbsp;·&nbsp; Images
+      sent: <strong>0</strong>
+    </p>
+
+    <button type="button" class="btn btn-ghost ftt-btn">Run the demo</button>
+  </div>
+</div>
+
+<style>
+  .ftt {
+    display: grid;
+    gap: 1.75rem;
+  }
+
+  .ftt-stage {
+    position: relative;
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--color-paper-sunk);
+    aspect-ratio: 4 / 3;
+  }
+  .ftt-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .ftt-room {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+  }
+
+  .ftt-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .ftt-checks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .ftt-check {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.85rem;
+    align-items: start;
+    padding: 0.8rem 0;
+    border-top: 1px solid var(--color-line-soft);
+    opacity: 0.45;
+    transition: opacity 0.3s ease;
+  }
+  .ftt-check:last-child {
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+  .ftt-check.on {
+    opacity: 1;
+  }
+  .ftt-dot {
+    width: 13px;
+    height: 13px;
+    margin-top: 0.42rem;
+    border-radius: 50%;
+    border: 2px solid var(--color-line);
+    background: transparent;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+  }
+  .ftt-check.on .ftt-dot {
+    background: var(--color-pine);
+    border-color: var(--color-pine);
+  }
+  .ftt-check strong {
+    display: block;
+    font-weight: 600;
+  }
+  .ftt-check span:not(.ftt-dot) {
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+  }
+
+  /* SMS bubble — the one thing that leaves the room */
+  .ftt-sms {
+    min-height: 6.4rem;
+  }
+  .ftt-bubble {
+    background: var(--color-pine-wash);
+    border: 1px solid color-mix(in srgb, var(--color-pine) 22%, transparent);
+    border-radius: 14px 14px 14px 4px;
+    padding: 0.9rem 1.1rem;
+    max-width: 26rem;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .ftt-sms.show .ftt-bubble {
+    opacity: 1;
+    transform: none;
+  }
+  .ftt-sms-from {
+    display: block;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-pine);
+    margin-bottom: 0.3rem;
+  }
+  .ftt-sms-text {
+    margin: 0;
+    font-size: var(--text-base);
+    color: var(--color-ink);
+  }
+
+  .ftt-ledger {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-faint);
+  }
+  .ftt-ledger strong {
+    color: var(--color-pine);
+    font-weight: 600;
+  }
+
+  .ftt-btn {
+    align-self: flex-start;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ftt-check,
+    .ftt-dot,
+    .ftt-bubble {
+      transition: none;
+    }
+  }
+
+  @media (min-width: 880px) {
+    .ftt {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem;
+      align-items: center;
+    }
+  }
+</style>
+
+<script>
+  import { makeSim, reducedMotion, WALK, FALL, sampleLoop, sampleSeq, drawSkeleton } from "../lib/sim.js";
+
+  const FALL_MS = 950;
+  const CHECK1_AT = 950;
+  const CHECK2_AT = 1750;
+  const SMS_AT = 3050; // after the (compressed) verification delay
+  const RISE_AT = 6500;
+  const RISE_MS = 1100;
+
+  function smsText() {
+    const now = new Date();
+    let h = now.getHours();
+    const m = String(now.getMinutes()).padStart(2, "0");
+    const ap = h >= 12 ? "p.m." : "a.m.";
+    h = h % 12 || 12;
+    return `EMOTE4D: a fall was confirmed in the living room at ${h}:${m} ${ap} — this is a demo message.`;
+  }
+
+  function initFtt(root) {
+    const canvas = root.querySelector(".ftt-canvas");
+    if (!canvas || canvas.dataset.init) return;
+    canvas.dataset.init = "1";
+
+    const btn = root.querySelector(".ftt-btn");
+    const sms = root.querySelector(".ftt-sms");
+    const smsTextEl = root.querySelector(".ftt-sms-text");
+    const checks = root.querySelectorAll(".ftt-check");
+
+    const pose = new Float64Array(34);
+    const fallSeq = [];
+    const riseSeq = [FALL[4], FALL[2], FALL[0], WALK[2]];
+
+    let mode = "walk"; // walk | seq
+    let clock = 0;
+    let walkClock = 0;
+    let seqAt = 0;
+    let armed = { c1: false, c2: false, sms: false, rose: false };
+    let autoArmed = !reducedMotion;
+    let rmFallen = false;
+
+    const setCheck = (i, on) => checks[i] && checks[i].classList.toggle("on", on);
+    const showSms = (on) => {
+      if (on) smsTextEl.textContent = smsText();
+      sms.classList.toggle("show", on);
+    };
+    const resetUi = () => {
+      setCheck(0, false);
+      setCheck(1, false);
+      setCheck(2, false);
+      showSms(false);
+    };
+
+    function trigger() {
+      if (mode !== "walk") return;
+      sampleLoop(WALK, walkClock / 1400, pose);
+      fallSeq.length = 0;
+      fallSeq.push(Array.from(pose), ...FALL);
+      mode = "seq";
+      seqAt = clock;
+      armed = { c1: false, c2: false, sms: false, rose: false };
+      resetUi();
+      btn.disabled = true;
+    }
+
+    function scene(ctx, view) {
+      const { W, H } = view;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = "#f4efe5";
+      ctx.fillRect(0, 0, W, H);
+      // a quiet room: ground line + a chair-like form, single weight
+      const gy = H * 0.88;
+      ctx.strokeStyle = "#ded6c6";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(0, gy);
+      ctx.lineTo(W, gy);
+      ctx.stroke();
+      ctx.strokeStyle = "#cfc5b2";
+      ctx.beginPath();
+      ctx.moveTo(W * 0.8, gy);
+      ctx.lineTo(W * 0.8, gy - H * 0.22);
+      ctx.lineTo(W * 0.92, gy - H * 0.22);
+      ctx.moveTo(W * 0.88, gy - H * 0.22);
+      ctx.lineTo(W * 0.88, gy - H * 0.4);
+      ctx.stroke();
+      drawSkeleton(ctx, pose, W * 0.44, gy, H * 0.72, "#2f5d50", Math.max(2.5, H * 0.012));
+    }
+
+    function render(ctx, t, dt, view) {
+      clock += dt;
+      if (mode === "walk") {
+        walkClock += dt;
+        sampleLoop(WALK, walkClock / 1400, pose);
+        if (autoArmed && clock > 2300) {
+          autoArmed = false;
+          trigger();
+        }
+      } else {
+        const el = clock - seqAt;
+        if (el < FALL_MS) {
+          sampleSeq(fallSeq, el / FALL_MS, pose);
+        } else if (el < RISE_AT) {
+          sampleSeq(fallSeq, 1, pose);
+        } else if (el < RISE_AT + RISE_MS) {
+          if (!armed.rose) {
+            armed.rose = true;
+            resetUi();
+          }
+          sampleSeq(riseSeq, (el - RISE_AT) / RISE_MS, pose);
+        } else {
+          mode = "walk";
+          walkClock = 1400 * 0.25;
+          btn.disabled = false;
+        }
+        if (!armed.c1 && el >= CHECK1_AT) {
+          armed.c1 = true;
+          setCheck(0, true);
+        }
+        if (!armed.c2 && el >= CHECK2_AT) {
+          armed.c2 = true;
+          setCheck(1, true);
+        }
+        if (!armed.sms && el >= SMS_AT) {
+          armed.sms = true;
+          setCheck(2, true);
+          showSms(true);
+        }
+      }
+      scene(ctx, view);
+    }
+
+    const sim = makeSim(canvas, {
+      render,
+      renderStill: (ctx, view) => {
+        if (rmFallen) {
+          sampleSeq(FALL, 1, pose);
+        } else {
+          sampleLoop(WALK, 0.18, pose);
+        }
+        scene(ctx, view);
+      },
+      fps: 30,
+    });
+
+    btn.addEventListener("click", () => {
+      if (reducedMotion) {
+        rmFallen = !rmFallen;
+        setCheck(0, rmFallen);
+        setCheck(1, rmFallen);
+        setCheck(2, rmFallen);
+        showSms(rmFallen);
+        btn.textContent = rmFallen ? "Reset the demo" : "Run the demo";
+        sim.redraw();
+      } else {
+        trigger();
+      }
+    });
+  }
+
+  document.querySelectorAll(".ftt").forEach(initFtt);
+</script>

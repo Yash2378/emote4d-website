@@ -1,19 +1,26 @@
 ---
 import Base from "../layouts/Base.astro";
+import FallToText from "../components/FallToText.astro";
 import WaitlistCta from "../components/WaitlistCta.astro";
 
-const designIntent = [
+const privacyProof = [
+  "No raw video stored or transmitted",
+  "No facial recognition — the system reads posture, not identity",
+  "Processing stays on the device, in the room",
+];
+
+const careTeam = [
   {
-    title: "Privacy that survives a procurement review",
-    body: "Because no image is ever stored or transmitted, the answer to \"where does the footage go?\" is that there is none. The device produces a stick figure on-site and nothing else leaves the room. There's no facial recognition either &mdash; it reads posture, not identity. It's a shorter conversation with a privacy officer, and with residents' families.",
+    title: "Alerts where staff already are",
+    body: "A confirmed fall triggers an SMS to the responders you designate, with a short verification delay built in.",
   },
   {
-    title: "Designed against alert fatigue",
-    body: "An alarm staff learn to ignore is worse than no alarm. EMOTE4D screens for a fall and then runs a separate check that the person is actually on the ground, with a short verification delay before anyone is notified. The discipline is deliberate: fewer, truer alerts.",
+    title: "Simple to place",
+    body: "One device per room, positioned to cover the space — no wearables for residents to remember, charge, or refuse.",
   },
   {
-    title: "The safety function doesn't depend on the cloud",
-    body: "Detection runs entirely on the device in the room. It keeps working through a Wi-Fi outage or an internet provider problem, because knowing a fall happened never required a round-trip to a server in the first place.",
+    title: "Quiet by default",
+    body: "No screens for residents, no two-way audio surveillance, no always-on video feed for anyone to watch.",
   },
 ];
 ---
@@ -34,19 +41,217 @@ const designIntent = [
       </p>
       <div class="hero-actions">
         <a href="/contact" class="btn btn-primary">Talk to us about a pilot</a>
-        <a href="/technology" class="btn btn-ghost">Read the architecture</a>
+        <a href="/technology" class="btn btn-ghost">See how it works</a>
       </div>
     </div>
   </section>
 
-  <!-- Three design intents -->
-  <section class="section">
+  <!-- 1 · Privacy that survives procurement -->
+  <section class="section" data-rise>
     <div class="wrap">
-      <p class="eyebrow">Why it's built this way</p>
-      <h2>Three problems an operator actually has.</h2>
+      <p class="eyebrow">The procurement question</p>
+      <h2>Privacy that survives a procurement review.</h2>
+
+      <div class="privacy-grid">
+        <div class="prose">
+          <p class="lead">
+            In a regulated residential setting, the hardest question isn't
+            &ldquo;does it work&rdquo; &mdash; it's &ldquo;what happens to the
+            footage.&rdquo; Most camera systems answer that with a policy.
+            EMOTE4D answers it with architecture.
+          </p>
+          <p>
+            Because no image is ever stored or transmitted, the answer to
+            &ldquo;where does the footage go?&rdquo; is that there is none. The
+            camera's frame becomes a stick figure on the device itself and is
+            discarded in the same moment; nothing else leaves the room. There
+            is no cloud account that can be breached, subpoenaed, or sold.
+          </p>
+          <p>
+            There's no facial recognition either &mdash; it reads posture, not
+            identity. It's a shorter conversation with a privacy officer, and
+            with residents' families.
+          </p>
+          <ul class="proof-list">
+            {
+              privacyProof.map((item) => (
+                <li>
+                  <svg
+                    class="proof-mark"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <!-- The data-flow answer: room → on-device stick figure → SMS out;
+             the storage/cloud path crossed out, because there is no footage. -->
+        <figure class="dfa">
+          <svg
+            class="dfa-svg"
+            viewBox="0 0 460 604"
+            role="img"
+            aria-labelledby="dfa-title dfa-desc"
+          >
+            <title id="dfa-title">Where the data goes — and where it can't</title>
+            <desc id="dfa-desc">
+              Flow diagram. A camera watches the room. On the device, each
+              frame becomes a stick figure and the image is discarded on the
+              spot. From the device, one path leads to an SMS sent to the
+              responders you designate. A second path, toward cloud storage,
+              is crossed out: there is no footage — nothing stored, nothing
+              sent.
+            </desc>
+
+            <!-- Node: the room -->
+            <rect class="dfa-node" x="155" y="16" width="150" height="88" rx="12"></rect>
+            <g class="dfa-glyph">
+              <path d="M219 46 L224 38 H236 L241 46"></path>
+              <rect x="202" y="46" width="56" height="34" rx="6"></rect>
+              <circle cx="230" cy="63" r="9"></circle>
+            </g>
+            <text class="dfa-t" x="230" y="132" text-anchor="middle">The room</text>
+            <text class="dfa-s" x="230" y="156" text-anchor="middle">A camera watches.</text>
+
+            <!-- Flow: room → device -->
+            <g class="dfa-flow">
+              <line x1="230" y1="170" x2="230" y2="192"></line>
+              <path d="M224 186 L230 194 L236 186"></path>
+            </g>
+
+            <!-- Node: on the device -->
+            <rect class="dfa-node" x="155" y="204" width="150" height="104" rx="12"></rect>
+            <g class="dfa-skel">
+              <circle cx="230" cy="228" r="9"></circle>
+              <line x1="230" y1="237" x2="230" y2="270"></line>
+              <line x1="230" y1="246" x2="212" y2="262"></line>
+              <line x1="230" y1="246" x2="248" y2="262"></line>
+              <line x1="230" y1="270" x2="216" y2="294"></line>
+              <line x1="230" y1="270" x2="244" y2="294"></line>
+            </g>
+            <g class="dfa-joint">
+              <circle cx="230" cy="246" r="2.8"></circle>
+              <circle cx="212" cy="262" r="2.8"></circle>
+              <circle cx="248" cy="262" r="2.8"></circle>
+              <circle cx="230" cy="270" r="2.8"></circle>
+              <circle cx="216" cy="294" r="2.8"></circle>
+              <circle cx="244" cy="294" r="2.8"></circle>
+            </g>
+            <text class="dfa-t" x="230" y="336" text-anchor="middle">On the device</text>
+            <text class="dfa-s" x="230" y="360" text-anchor="middle">Each frame becomes a stick figure;</text>
+            <text class="dfa-s" x="230" y="382" text-anchor="middle">the image is discarded on the spot.</text>
+
+            <!-- Fork: the only thing that leaves is a text -->
+            <g class="dfa-flow">
+              <path d="M230 396 L230 414 L150 414 L150 444"></path>
+              <path d="M144 437 L150 445 L156 437"></path>
+            </g>
+            <circle class="dfa-junction" cx="230" cy="414" r="3"></circle>
+
+            <!-- Dead end: the storage/cloud path that does not exist -->
+            <path class="dfa-dead" d="M230 414 L310 414 L310 452"></path>
+            <g class="dfa-x">
+              <line x1="301" y1="423" x2="319" y2="441"></line>
+              <line x1="319" y1="423" x2="301" y2="441"></line>
+            </g>
+            <g class="dfa-cloud" transform="translate(286 456) scale(2)">
+              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+            </g>
+            <text class="dfa-none" x="310" y="524" text-anchor="middle">There is no footage.</text>
+            <text class="dfa-s" x="310" y="547" text-anchor="middle">Nothing stored. Nothing sent.</text>
+
+            <!-- Node: SMS out -->
+            <g class="dfa-glyph">
+              <rect x="117" y="452" width="66" height="92" rx="12"></rect>
+              <line x1="140" y1="464" x2="160" y2="464"></line>
+              <rect x="128" y="476" width="44" height="30" rx="7"></rect>
+              <path d="M136 506 L132 515 L146 506"></path>
+              <line x1="136" y1="486" x2="164" y2="486"></line>
+              <line x1="136" y1="495" x2="154" y2="495"></line>
+            </g>
+            <text class="dfa-t" x="150" y="572" text-anchor="middle">A text to staff</text>
+            <text class="dfa-s" x="150" y="595" text-anchor="middle">To the responders you designate.</text>
+          </svg>
+          <figcaption class="dfa-caption">
+            The one-glance answer for a privacy review: a stick figure on the
+            device, a text out &mdash; and no footage path at all.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · Alert fatigue -->
+  <section class="section demo" data-rise>
+    <div class="wrap">
+      <p class="eyebrow">Fewer, truer alerts</p>
+      <h2>Built against alert fatigue.</h2>
+      <div class="prose">
+        <p class="lead">
+          An alarm staff learn to ignore is worse than no alarm. When false
+          alerts pile up, staff stop trusting all alerts &mdash; and the one
+          that matters gets ignored.
+        </p>
+        <p>
+          EMOTE4D is designed around that problem. A fall has to clear two
+          independent checks before anyone is notified: a model first screens
+          the motion, then a separate step confirms the person is actually on
+          the ground, with a short verification delay before the text goes
+          out. The discipline is deliberate: fewer, truer alerts. The goal
+          isn't to flag everything that <em>might</em> be a fall &mdash; it's
+          to be worth paying attention to when it does alert.
+        </p>
+      </div>
+      <p class="demo-intro">
+        Here is that sequence running, drawn from the same stick figure the
+        device actually produces.
+      </p>
+      <FallToText />
+    </div>
+  </section>
+
+  <!-- 3 · No cloud dependency -->
+  <section class="section" data-rise>
+    <div class="wrap">
+      <p class="eyebrow">No cloud dependency</p>
+      <h2>The safety function doesn't depend on the cloud.</h2>
+      <div class="prose">
+        <p class="lead">
+          Detection runs entirely on the device in the room. It keeps working
+          through a Wi-Fi outage or an internet provider problem, because
+          knowing a fall happened never required a round-trip to a server in
+          the first place.
+        </p>
+        <p>
+          There is no per-room cloud subscription required for the core safety
+          function, and no monthly fee gating whether the system actually
+          watches for falls.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Designed for care teams -->
+  <section class="section" data-rise>
+    <div class="wrap">
+      <p class="eyebrow">Day to day</p>
+      <h2>Designed for how care teams actually work.</h2>
       <div class="intent-list">
         {
-          designIntent.map((d) => (
+          careTeam.map((d) => (
             <article class="intent">
               <h3>{d.title}</h3>
               <p>{d.body}</p>
@@ -55,14 +260,14 @@ const designIntent = [
         }
       </div>
       <p class="note">
-        These are design intentions for the pilot, not validated results. We'll
-        have honest numbers to share once the pilot has produced them.
+        These are design intentions for the pilot, not validated results.
+        We'll have honest numbers to share once the pilot has produced them.
       </p>
     </div>
   </section>
 
-  <!-- What a pilot looks like -->
-  <section class="section panel">
+  <!-- 5 · What a pilot looks like -->
+  <section class="section panel" data-rise>
     <div class="wrap">
       <p class="eyebrow">The pilot</p>
       <h2>What a pilot looks like.</h2>
@@ -73,21 +278,38 @@ const designIntent = [
         </p>
         <p>
           A pilot means installing the device in a set of rooms, routing
-          confirmed-fall alerts to the staff or workflow you choose, and sitting
-          down with us regularly to review what fired, what didn't, and what
-          needs to change. The point of a pilot is to find the gaps before anyone
-          relies on it &mdash; so we'd rather hear what's wrong than what's
-          polite.
+          confirmed-fall alerts to the staff or workflow you choose, and
+          sitting down with us regularly to review what fired, what didn't,
+          and what needs to change. The point of a pilot is to find the gaps
+          before anyone relies on it &mdash; so we'd rather hear what's wrong
+          than what's polite.
+        </p>
+        <p>
+          We'll be measuring how the system performs in the conditions that
+          actually matter &mdash; night, clutter, real movement &mdash; rather
+          than leaning on lab numbers. And we're committed to independent
+          testing and to reporting what we find, including the limitations.
         </p>
       </div>
+      <a href="/contact" class="arrow-link pilot-link">
+        Start a conversation
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg
+        >
+      </a>
     </div>
   </section>
 
   <WaitlistCta
-    eyebrow="Pilot partners"
-    title="Explore a pilot with us."
-    body="Tell us about your facility and what you're trying to cover. We're prioritizing partners in Manitoba for the 2026 pilot."
-    cta="Talk to us about a pilot"
+    eyebrow="Pilot with us"
+    title="Bring the pilot to your facility."
+    body="We're starting in Manitoba in 2026 and talking with operators now. Tell us about your facility and we'll come to you with specifics, not a sales deck."
   />
 </Base>
 
@@ -106,7 +328,145 @@ const designIntent = [
   .panel {
     background: var(--color-pine-wash);
   }
+  .demo {
+    background: var(--color-paper-sunk);
+  }
+  .prose {
+    margin-top: 2rem;
+  }
+  .prose p:first-child {
+    margin-top: 0;
+  }
 
+  /* ── Privacy section: copy + the data-flow answer ─────────── */
+  .privacy-grid {
+    display: grid;
+    gap: 3rem;
+    margin-top: 0.5rem;
+  }
+  .privacy-grid .prose {
+    margin-top: 2rem;
+  }
+
+  .proof-list {
+    list-style: none;
+    margin: 1.75rem 0 0;
+    padding: 1.25rem 0 0;
+    border-top: 1px solid var(--color-line-soft);
+  }
+  .proof-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.85rem;
+    align-items: start;
+    padding: 0.55rem 0;
+    color: var(--color-muted);
+    max-width: 36rem;
+  }
+  .proof-mark {
+    margin-top: 0.2rem;
+    color: var(--color-pine);
+    flex-shrink: 0;
+  }
+
+  /* The diagram */
+  .dfa {
+    margin: 2rem 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .dfa-svg {
+    width: 100%;
+    max-width: 27rem;
+    height: auto;
+    display: block;
+  }
+  .dfa-caption {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-base);
+    line-height: 1.4;
+    color: var(--color-muted);
+    max-width: 24rem;
+  }
+
+  /* Single line weight throughout: 2px */
+  .dfa-node {
+    fill: var(--color-paper-sunk);
+    stroke: var(--color-line);
+    stroke-width: 2;
+  }
+  .dfa-glyph,
+  .dfa-skel,
+  .dfa-flow {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .dfa-glyph {
+    stroke: var(--color-ink);
+  }
+  .dfa-skel {
+    stroke: var(--color-pine);
+  }
+  .dfa-joint circle {
+    fill: var(--color-pine);
+  }
+  .dfa-flow {
+    stroke: var(--color-muted);
+  }
+  .dfa-junction {
+    fill: var(--color-muted);
+  }
+  .dfa-dead {
+    fill: none;
+    stroke: var(--color-faint);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 5 7;
+  }
+  .dfa-x line {
+    stroke: var(--color-terracotta);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+  .dfa-cloud path {
+    fill: none;
+    stroke: var(--color-faint);
+    stroke-width: 1; /* inside a scale(2) group → renders at 2px */
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .dfa-t {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 600;
+    fill: var(--color-ink);
+  }
+  .dfa-s {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    fill: var(--color-muted);
+  }
+  .dfa-none {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 600;
+    fill: var(--color-ink);
+  }
+
+  /* ── Alert-fatigue demo ────────────────────────────────────── */
+  .demo-intro {
+    color: var(--color-muted);
+    max-width: 40rem;
+    margin: 2.25rem 0 1.75rem;
+  }
+
+  /* ── Care-team rows ───────────────────────────────────────── */
   .intent-list {
     margin-top: 2.5rem;
     border-top: 1px solid var(--color-line);
@@ -130,11 +490,28 @@ const designIntent = [
     font-size: var(--text-sm);
     color: var(--color-faint);
   }
-  .prose {
-    margin-top: 2rem;
+
+  /* ── Pilot panel ──────────────────────────────────────────── */
+  .pilot-link {
+    margin-top: 1.5rem;
   }
 
+  /* ── Responsive ───────────────────────────────────────────── */
   @media (min-width: 880px) {
+    .privacy-grid {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 4.5rem;
+      align-items: start;
+    }
+    .dfa {
+      margin-top: 0.5rem;
+      align-items: center;
+      justify-self: end;
+    }
+    .dfa-caption {
+      align-self: flex-start;
+    }
+
     .intent {
       display: grid;
       grid-template-columns: 18rem 1fr;

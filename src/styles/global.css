@@ -247,6 +247,25 @@ p {
   max-width: 38rem;
 }
 
+/* ── Quiet scroll reveal ───────────────────────────────────────
+   Sections marked data-rise lift in once as they enter the
+   viewport. JS adds .risen; without JS (or with reduced motion)
+   everything is simply visible. Motion only where it carries
+   meaning — this carries the reading rhythm, nothing more. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-rise] {
+    opacity: 0.001;
+    transform: translateY(14px);
+    transition:
+      opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  html.js [data-rise].risen {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (min-width: 880px) {
   .page-hero {
     padding-top: 5rem;

@@ -36,6 +36,9 @@ const ogUrl = new URL(ogImage, Astro.site ?? "https://emote4d.com");
     <title>{title}</title>
     <meta name="description" content={description} />
 
+    <!-- Reveal styles only apply when JS is present to trigger them -->
+    <script is:inline>document.documentElement.classList.add("js");</script>
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="EMOTE4D" />
@@ -52,6 +55,30 @@ const ogUrl = new URL(ogImage, Astro.site ?? "https://emote4d.com");
       <slot />
     </main>
     <Footer />
+
+    <script>
+      // Quiet one-time reveal for sections marked data-rise.
+      const els = document.querySelectorAll("[data-rise]");
+      if (
+        els.length &&
+        !matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add("risen");
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.1, rootMargin: "0px 0px -6% 0px" }
+        );
+        els.forEach((el) => io.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add("risen"));
+      }
+    </script>
 
     <style is:global>
       .skip-link {

@@ -1,13 +1,23 @@
 ---
 import Base from "../layouts/Base.astro";
 import CameraToSkeleton from "../components/CameraToSkeleton.astro";
+import PrivacyLens from "../components/PrivacyLens.astro";
 import WaitlistCta from "../components/WaitlistCta.astro";
+
+// Every item is a True Fact from the content brief — nothing aspirational.
+const reassurances = [
+  "There is nothing to wear, nothing to charge, nothing to remember to put on.",
+  "No video is ever stored or sent. The picture is discarded on the device, in the room.",
+  "There is no facial recognition. It reads posture and movement, never who someone is.",
+  "If a fall is confirmed, a plain text message goes to the people they choose.",
+];
 ---
 
 <Base
   title="EMOTE4D for families — know they're okay, without watching them"
   description="A fall detector for a parent living alone. It uses a camera but never keeps the picture, there's nothing to wear, and you get a text if they fall. Pilot launching 2026 in Manitoba."
 >
+  <!-- HERO -->
   <section class="page-hero">
     <div class="wrap hero-grid">
       <div>
@@ -15,9 +25,9 @@ import WaitlistCta from "../components/WaitlistCta.astro";
         <h1>Know they're okay, without watching them.</h1>
         <p class="page-lead">
           If a parent lives alone, a fall on the kitchen floor with no way to
-          call for help is the thing that keeps you up at night. EMOTE4D is built
-          for exactly that moment &mdash; and it does it without putting a video
-          feed of their daily life on anyone's server.
+          call for help is the thing that keeps you up at night. EMOTE4D is
+          built for exactly that moment &mdash; and it does it without putting
+          a video feed of their daily life on anyone's server.
         </p>
         <div class="hero-actions">
           <a href="/contact" class="btn btn-primary">Join the waitlist</a>
@@ -31,7 +41,7 @@ import WaitlistCta from "../components/WaitlistCta.astro";
   </section>
 
   <!-- The problem, named honestly -->
-  <section class="section">
+  <section class="section" data-rise>
     <div class="wrap">
       <p class="eyebrow">The honest trade-off</p>
       <h2>The usual options each ask you to give something up.</h2>
@@ -40,43 +50,57 @@ import WaitlistCta from "../components/WaitlistCta.astro";
           <h3>A pendant they have to wear</h3>
           <p>
             It works only if it's on them, charged, and they can still press it
-            after a fall. The ones who need it most are the ones who leave it on
-            the nightstand.
+            after a fall. The ones who need it most are the ones who leave it
+            on the nightstand.
           </p>
         </div>
         <div class="measure">
           <h3>A camera you watch</h3>
           <p>
             A normal home camera trades the worry for a different one: now
-            there's a live view of your parent's bathroom and bedroom sitting on
-            a company's servers. Most people can't bring themselves to put one in.
+            there's a live view of your parent's bathroom and bedroom sitting
+            on a company's servers. Most people can't bring themselves to put
+            one in.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- What EMOTE4D does -->
-  <section class="section panel">
+  <!-- What EMOTE4D does — and the dignity question, answered visually -->
+  <section class="section panel" data-rise>
     <div class="wrap">
       <p class="eyebrow">What EMOTE4D does instead</p>
-      <h2>A camera that turns your parent into a stick figure, and forgets the rest.</h2>
-      <div class="prose">
-        <p class="lead">
-          The device sees the room, works out body position on the spot, and
-          throws the picture away. There is no recording to leak and no feed for
-          anyone &mdash; including us &mdash; to watch.
-        </p>
-        <p>
-          Nothing to wear. Nothing to charge. Nothing to remember. It sits in the
-          corner and does its job whether or not anyone thinks about it.
-        </p>
+      <h2>
+        A camera that turns your parent into a stick figure, and forgets the
+        rest.
+      </h2>
+      <div class="does-grid">
+        <div class="does-copy prose">
+          <p class="lead">
+            The device sees the room, works out body position on the spot, and
+            throws the picture away. There is no recording to leak and no feed
+            for anyone &mdash; including us &mdash; to watch.
+          </p>
+          <p class="pull">
+            Nothing to wear. Nothing to charge. Nothing to remember.
+          </p>
+          <p>
+            It sits in the corner and does its job whether or not anyone
+            thinks about it.
+          </p>
+        </div>
+        <div class="does-lens">
+          <PrivacyLens
+            caption="Drag the line. The right side is everything we'd ever see of your mom or dad."
+          />
+        </div>
       </div>
     </div>
   </section>
 
   <!-- What happens in a fall -->
-  <section class="section">
+  <section class="section" data-rise>
     <div class="wrap">
       <p class="eyebrow">If a fall happens</p>
       <h2>You get a text. Quickly, but not falsely.</h2>
@@ -84,50 +108,85 @@ import WaitlistCta from "../components/WaitlistCta.astro";
         <div class="measure">
           <h3>A short wait, on purpose</h3>
           <p>
-            When the system thinks it has seen a fall, it takes a second look to
-            confirm the person is on the ground before it does anything. That
-            pause is the difference between a real alert and a false one.
+            When the system thinks it has seen a fall, it takes a second look
+            to confirm the person is on the ground before it does anything.
+            That pause is the difference between a real alert and a false one.
           </p>
         </div>
         <div class="measure">
           <h3>An SMS to the people you choose</h3>
           <p>
             Once a fall is confirmed, EMOTE4D sends a text message to the
-            caregivers on the list &mdash; you, a sibling, a neighbour down the
-            road. A plain message, not an app you have to keep open.
+            caregivers on the list &mdash; you, a sibling, a neighbour down
+            the road. A plain message, not an app you have to keep open.
           </p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Quiet reassurance — the four facts to bring to the conversation -->
+  <section class="section" data-rise>
+    <div class="wrap">
+      <p class="eyebrow">In plain words</p>
+      <h2>The short answers, for when they ask.</h2>
+      <p class="reassure-lead">
+        Putting anything in a parent's home is a conversation. These are the
+        four facts to bring to it.
+      </p>
+      <ul class="promises">
+        {
+          reassurances.map((item) => (
+            <li>
+              <svg
+                class="promise-mark"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 13l4 4L19 7" />
+              </svg>
+              <span>{item}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
   <!-- Honest about where we are -->
-  <section class="section panel">
+  <section class="section panel" data-rise>
     <div class="wrap">
       <p class="eyebrow">Before you sign up</p>
       <h2>Where things honestly stand.</h2>
       <div class="prose">
         <p>
           EMOTE4D is pre-launch. The first pilot is in 2026 in Neepawa and
-          Brandon, Manitoba, so the earliest spots are for families there. It is
-          a safety aid, not a medical device, and not a replacement for checking
-          in on someone you love.
+          Brandon, Manitoba, so the earliest spots are for families there. It
+          is a safety aid, not a medical device, and not a replacement for
+          checking in on someone you love.
         </p>
         <p>
-          If that's the kind of thing you've been looking for, the waitlist is
-          the way to be first in line.
+          If that's the kind of thing you've been looking for, adding your
+          family to the waitlist below is the way to be first in line. Tell us
+          a little about your situation and where you are, and we'll reach out
+          as pilot spots open up.
         </p>
       </div>
     </div>
   </section>
 
-  <WaitlistCta
-    title="Add your family to the waitlist."
-    body="Tell us a little about your situation and where you are. We'll reach out as pilot spots open up."
-  />
+  <WaitlistCta />
 </Base>
 
 <style>
+  /* HERO */
   .hero-grid {
     display: grid;
     gap: 3rem;
@@ -147,12 +206,13 @@ import WaitlistCta from "../components/WaitlistCta.astro";
   .section h2 {
     font-size: var(--text-3xl);
     margin: 0.75rem 0 0;
-    max-width: 24ch;
+    max-width: 26ch;
   }
   .panel {
     background: var(--color-pine-wash);
   }
 
+  /* Two quiet columns */
   .cols {
     display: grid;
     gap: 2.5rem;
@@ -166,8 +226,66 @@ import WaitlistCta from "../components/WaitlistCta.astro";
     color: var(--color-muted);
     margin: 0;
   }
+
+  /* What it does — copy beside the lens */
+  .does-grid {
+    display: grid;
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+  }
+  .does-copy p:first-child {
+    margin-top: 1rem;
+  }
+  .pull {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    max-width: 18ch;
+    margin: 1.9rem 0 1rem;
+    text-wrap: balance;
+  }
+  .does-lens {
+    max-width: 34rem;
+  }
+
   .prose {
     margin-top: 2rem;
+  }
+
+  /* The reassurance list — big, warm, unhurried */
+  .reassure-lead {
+    color: var(--color-muted);
+    max-width: 38rem;
+    margin-top: 1.25rem;
+  }
+  .promises {
+    list-style: none;
+    margin: 2.5rem 0 0;
+    padding: 0;
+  }
+  .promises li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.1rem;
+    align-items: start;
+    padding: 1.4rem 0;
+    border-top: 1px solid var(--color-line-soft);
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+    max-width: 46rem;
+    text-wrap: pretty;
+  }
+  .promises li:last-child {
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+  .promise-mark {
+    color: var(--color-pine);
+    margin-top: 0.35rem;
+    flex-shrink: 0;
   }
 
   @media (min-width: 880px) {
@@ -178,6 +296,15 @@ import WaitlistCta from "../components/WaitlistCta.astro";
     .cols {
       grid-template-columns: 1fr 1fr;
       gap: 4rem;
+    }
+    .does-grid {
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 4rem;
+      align-items: center;
+      margin-top: 2.5rem;
+    }
+    .does-lens {
+      max-width: none;
     }
   }
 </style>

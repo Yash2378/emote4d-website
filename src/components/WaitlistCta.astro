@@ -1,38 +1,47 @@
 ---
+/**
+ * The closing band on audience pages: the pilot pitch on the left,
+ * a working inline waitlist form on the right.
+ */
+import WaitlistForm from "./WaitlistForm.astro";
+
 interface Props {
   eyebrow?: string;
   title?: string;
   body?: string;
-  cta?: string;
-  href?: string;
 }
 const {
   eyebrow = "The pilot",
   title = "We're starting in Manitoba.",
-  body = "EMOTE4D is pre-launch. The pilot begins in 2026 in Neepawa and Brandon. Join the waitlist and we'll be in touch.",
-  cta = "Join the waitlist",
-  href = "/contact",
+  body = "EMOTE4D is pre-launch. The pilot begins in 2026 in Neepawa and Brandon. Join the waitlist and we'll be in touch — or write to us on the contact page.",
 } = Astro.props;
 ---
 
-<section class="section cta-band">
+<section class="section cta-band" data-rise>
   <div class="wrap cta-inner">
     <div class="cta-copy">
       <p class="eyebrow">{eyebrow}</p>
       <h2>{title}</h2>
       <p>{body}</p>
+      <p class="cta-more">
+        Want to say more than an email address?
+        <a href="/contact" class="link">Use the full form</a>.
+      </p>
     </div>
     <div class="cta-action">
-      <a href={href} class="btn btn-primary">{cta}</a>
+      <WaitlistForm class="cta-form" />
     </div>
   </div>
 </section>
 
 <style>
+  .cta-band {
+    background: var(--color-pine-wash);
+  }
   .cta-inner {
     display: grid;
-    gap: 2rem;
-    align-items: end;
+    gap: 2.5rem;
+    align-items: start;
   }
   .cta-copy h2 {
     font-size: var(--text-3xl);
@@ -40,12 +49,26 @@ const {
   }
   .cta-copy p {
     color: var(--color-muted);
-    max-width: 40rem;
+    max-width: 36rem;
     margin: 0;
+  }
+  .cta-more {
+    margin-top: 0.85rem !important;
+    font-size: var(--text-sm);
+  }
+  .cta-action {
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    padding: 1.5rem;
+  }
+  /* the card is half-width — keep the form stacked inside it */
+  .cta-action :global(.wl-fields) {
+    grid-template-columns: 1fr;
   }
   @media (min-width: 880px) {
     .cta-inner {
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr 1.05fr;
       gap: 4rem;
     }
   }
